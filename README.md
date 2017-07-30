@@ -4,7 +4,7 @@ Contains a wrapper for the vk.com API written in nim lang
 This module is wrapper for vk.com API.
 It gives ability to call vk.com API method using synchronius and asynchronius approach.
 
-In addition this module exposes two macros ``@`` and ``@>`` to make API calls in more convenient manner
+In addition this module exposes macros ``@`` to make API calls in more convenient manner
 
 
 > vk.com uses https that is why you need to use `-d:ssl` compile flag
@@ -29,12 +29,12 @@ Sync examples with simple ``api_request`` calls, and macros calls:
 # simple api_request
 echo vk_api.api_request("friends.getOnline")
 echo vk_api.api_request("fave.getPosts", {"count": "1"}.newTable)
-echo vk_api.api_request("wall.post", {"friends_only"="1", "message"="Hello world fom nim-lang"}.newTable, isPost=true)
+echo vk_api.api_request("wall.post", {"friends_only"="1", "message"="Hello world fom nim-lang"}.newTable)
 
 # awesome beautiful macros
 echo vk_api@friends.getOnline()
 echo vk_api@fave.getPosts(count=1)
-vk_api@>wall.post(friends_only=1, message="Hello world fom nim-lang")
+vk_api@wall.post(friends_only=1, message="Hello world fom nim-lang")
 ```
 
 Async examples with simple ``api_request`` calls, and macros calls:
@@ -44,16 +44,9 @@ echo waitFor async_vk_api.api_request("wall.get", {"count": "1"}.newTable)
 echo waitFor async_vk_api@wall.get(count=1)
 ```
 
-> Pay Attention
->
-> If you are using macros. 
->
-> `@` - this macros for making GET request. For request to read data.
->
-> `@>` - this macros for making POST request. To post new data to vk
 ## macros
 
-`@` and `@>` macros gives ability to make API calls in more convenient manner
+`@` macros gives ability to make API calls in more convenient manner
 
 This is infix macros.
 
@@ -61,17 +54,12 @@ Left argument is ``VkApi`` or ``AsyncVkApi`` object. Right is namespace and meth
 
 And finaly in parentheses you can specify any number of named arguments.
 
-`@` macros converts to ``api_equest`` with ``isPost=false`` and makes GET request to API
+`@` macros converts to ``api_equest`` and makes request to API
 Example:
 ```nim
 echo vk_api@friends.getOnline()
 echo vk_api@fave.getPosts(count=1, offset=50)
-```
-
-`@>` macros converts to ``api_equest`` with ``isPost=true`` and makes POST request to API
-Examples:
-```nim
-echo vk_api@>wall.post(friends_only=1, message="Hello world fom nim-lang")
+echo vk_api@wall.post(friends_only=1, message="Hello world fom nim-lang")
 ```
 
 ## Vk api 
