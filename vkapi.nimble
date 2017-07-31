@@ -1,8 +1,8 @@
 # Package
 
-version       = "1.0.0"
-author        = "cyberlis (Denis Lisovik)"
-description   = "Contains a wrapper for the vk.com API"
+version       = "1.1.0"
+author        = "TiberiumN (Daniil Yarancev) and cyberlis (Denis Lisovik)"
+description   = "Wrapper for vk.com API"
 license       = "MIT"
 
 skipDirs      = @["docs"]
