@@ -147,10 +147,8 @@ macro `@`* (api: VkApi | AsyncVkApi, body: untyped): untyped =
     # If it's a equality expression "abcd=something"
     if arg.kind == nnkExprEqExpr:
       # We need to convert value to the appropriate format
-      let value = if arg[1].kind in {nnkIdent, nnkStrLit}: arg[1]
-                  else: arg[1].toStrLit
       # Add it to our API parameters table 
-      table.add(newColonExpr(arg[0].toStrLit, value))
+      table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
   # Finally create a statement to call API
   result = quote do:
     `api`.apiRequest(`name`, `table`.toApi)
