@@ -1,70 +1,95 @@
-## This module is wrapper for vk.com API.
+## This module is a wrapper for vk.com API.
 ##
-## It gives ability to call vk.com API method using synchronius and asynchronius approach.
+## It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
 ##
-## In addition this module exposes macros ``@`` to make API calls in more convenient manner
+## In addition this module exposes macro ``@`` to ease calling API methods
 ##
-## Here is an examples of how to use this module
+## Initialization
+## ====================
 ##
-## Initialization::
+## .. code-block:: Nim
+##    # Synchronous VK API
+##    let api = newVkApi(token="you access token here")
+##    # Asynchronous VK API
+##    let asyncApi = newAsyncVkApi(token="you access token here")
 ##
-##    var vk_api = initVkApi(access_key="you key here") # Sync VkApi
-##    var async_vk_api = initAsyncVkApi(access_key="you key here") # Async VkApi
+## Synchronous VK API usage
+## ====================
 ##
-## Sync examples with simple ``api_request`` calls, and macros calls::
+## .. code-block:: Nim
+##    echo api.apiRequest("friends.getOnline")
+##    echo api.apiRequest("fave.getPosts", {"count": "1"}.newTable)
+##    echo api.apiRequest("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
 ##
-##    echo vk_api.api_request("friends.getOnline")
-##    echo vk_api.api_request("fave.getPosts", {"count": "1"}.newTable)
-##    echo vk_api.api_request("wall.post", {"friends_only"="1", "message"="Hello world from nim-lang"}.newTable)
+##    echo api@friends.getOnline()
+##    echo api@fave.getPosts(count=1)
+##    api@wall.post(friends_only=1, message="Hello world from nim-lang")
 ##
-##    echo vk_api@friends.getOnline()
-##    echo vk_api@fave.getPosts(count=1)
-##    vk_api@wall.post(friends_only=1, message="Hello world from nim-lang")
+## Asynchronous VK API usage
+## ====================
 ##
-## Async examples with simple ``api_request`` calls, and macros calls::
-##
+## .. code-block:: Nim
 ##    import asyncdispatch
-##    echo waitFor vk_api.api_request("wall.get", {"count": "1"}.newTable)
-##    echo waitFor vk_api@wall.get(count=1)
+##    echo waitFor asyncApi.apiRequest("wall.get", {"count": "1"}.toApi)
+##    echo waitFor asyncApi@wall.get(count=1)
 
-import httpclient, strutils
-import asyncdispatch, asyncnet
+# HTTP client
+import httpclient
+# `join` procedure
+import strutils
+# Async and multisync features
+import asyncdispatch
+# `@` macro
 import macros
+# URL encoding
 import cgi
-import tables
-export tables
+# String tables
+import strtabs
+export strtabs
 
-const VK_URL* = "https://api.vk.com/method/" ## Default API url for vk.com API method calls
+
+const 
+  VkUrl* = "https://api.vk.com/method/"  ## Default API url for vk.com API method calls
+
+  ApiVer* = "5.67" ## Default API version
+
 type
-    VkApi* = object
-        ## Object for sync API call to vk.com
-        access_key*: string
-        version*: string
-        api_url*: string
-        client*: HttpClient
-    AsyncVkApi* = object
-        ## Object for async API call to vk.com
-        access_key*: string
-        version*: string
-        api_url*: string
-        client*: AsyncHttpClient
+  VkApiBase*[HttpType] = ref object  ## VK API object base
+    token*: string  ## VK API token
+    version*: string  ## VK API version
+    url*: string  ## VK API url
+    when HttpType is HttpClient: client: HttpClient
+    else: client: AsyncHttpClient
+  
+  VkApi* = VkApiBase[HttpClient] ## VK API object for doing synchronous requests
+  
+  AsyncVkApi* = VkApiBase[AsyncHttpClient] ## VK API object for doing asynchronous requests
 
-proc initVkApi*(access_key, version="5.67", api_url=VK_URL): VkApi =
-    ## Initialize ``VkApi`` sync object. Here you have to setup access_key and optionaly setup version and API url
-    result.access_key = access_key
-    result.api_url = api_url
-    result.version = version
-    result.client = newHttpClient()
+proc newVkApi*(token = "", version = ApiVer, url = VkUrl): VkApi =
+  ## Initialize ``VkApi`` object.
+  ##
+  ## - ``token`` - your VK API access token
+  ## - ``version`` - VK API version
+  ## - ``url`` - VK API url
+  new(result)
+  result.token = token
+  result.url = url
+  result.version = version
+  result.client = newHttpClient()
 
-proc initAsyncVkApi*(access_key, version="5.67", api_url=VK_URL): AsyncVkApi =
-    ## Initialize ``AsyncVkApi`` async object. Here you have to setup access_key and optionaly setup version and API url
-    result.access_key = access_key
-    result.api_url = api_url
-    result.version = version
-    result.client = newAsyncHttpClient()
+proc newAsyncVkApi*(token = "", version = ApiVer, url = VkUrl): AsyncVkApi =
+  ## Initialize ``AsyncVkApi`` object.
+  ##
+  ## - ``token`` - your VK API access token
+  ## - ``version`` - VK API version
+  ## - ``url`` - VK API url
+  new(result)
+  result.token = token
+  result.url = url
+  result.version = version
+  result.client = newAsyncHttpClient()
 
-proc encodeParams(params: TableRef[string, string]): string =
-  if params.isNil(): return ""
+proc encode(params: StringTableRef): string =
   result = ""
   var parts = newSeq[string]()
   for key, val in pairs(params):
@@ -74,66 +99,58 @@ proc encodeParams(params: TableRef[string, string]): string =
     parts.add($enck & "=" & $encv)
   result.add(parts.join("&"))
 
-proc api_request*(vk_api: VkApi | AsyncVkApi, api_method: string, params: TableRef[string, string]=nil): Future[string] {.multisync.} =
-    ## Main method for request vk.com API.
-    ##
-    ## - ``vk_api`` - is API object (``VkApi`` or ``AsyncVkApi``)
-    ## - ``api_method`` - namespace and method separated with dot from vk.com documentation (https://vk.com/dev/methods)
-    ## - ``params`` - is Table of method's parameters and there values
-    ## - ``return`` - returns API response text as string.
-    ## Examples::
-    ##
-    ##    echo vk_api.api_request("friends.getOnline")
-    ##    echo vk_api.api_request("fave.getPosts", {"count": "1"}.newTable)
-    ##    echo vk_api.api_request("wall.post", {"friends_only"="1", "message"="Hello world from nim-lang"}.newTable)
-    var
-        url = vk_api.api_url
-        post_params = ""
-        api_params: TableRef[string, string]
-    if not params.isNil():
-        api_params = params
-    else:
-        api_params = newTable[string, string]()
-    api_params["v"] = vk_api.version
-    api_params["access_token"] = vk_api.access_key
-    url.add(api_method)
-    post_params = encodeParams(api_params)
-    return await vk_api.client.postContent(url, body=post_params)
+template toApi*(data: untyped): StringTableRef = 
+  ## Shortcut for newStringTable to create arguments for apiRequest call
+  data.newStringTable()
 
-macro `@`* (name: typed, body: untyped): untyped =
-    ## This macros gives ability to make API calls in more convenient manner
-    ##
-    ## This is infix macros.
-    ##
-    ## Left argument is ``VkApi`` or ``AsyncVkApi`` object. Right is namespace and method name separated by dot.
-    ##
-    ## And finaly in parentheses you can specify any number of named arguments.
-    ##
-    ## This macros converts to ``api_request`` and makes request to API
-    ## Examples::
-    ##
-    ##    echo vk_api@friends.getOnline()
-    ##    echo vk_api@fave.getPosts(count=1, offset=50)
+proc apiRequest*(api: VkApi | AsyncVkApi, name: string, 
+                 params = newStringTable()): Future[string] {.multisync.} =
+  ## Main method for  VK API requests.
+  ##
+  ## - ``api`` - API object (``VkApi`` or ``AsyncVkApi``)
+  ## - ``name`` - namespace and method separated with dot (https://vk.com/dev/methods)
+  ## - ``params`` - StringTable with parameters
+  ## - ``return`` - returns API response text as string.
+  ## Examples:
+  ##
+  ## .. code-block:: Nim
+  ##    echo api.apiRequest("friends.getOnline")
+  ##    echo api.apiRequest("fave.getPosts", {"count": "1"}.toApi)
+  ##    echo api.apiRequest("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
+  params["v"] = api.version
+  params["access_token"] = api.token
+  return await api.client.postContent(api.url & name, body=params.encode())
 
-    result = newNimNode(nnkCall)
-    var tmpTable = newNimNode(nnkTableConstr)
-    result.add(ident("api_request"))
-    if body.kind != nnkCall:
-        quit "Syntax error"
-    if body[0].kind != nnkDotExpr:
-        quit "Syntax error"
-    result.add(name)
-    result.add(body[0].toStrLit)
-    if body.len > 1:
-        for arg in body.children:
-            case arg.kind:
-            of nnkExprEqExpr:  
-                if arg[1].kind == nnkIdent or arg[1].kind == nnkStrLit:
-                    tmpTable.add(newColonExpr(arg[0].toStrLit, arg[1]))
-                else: 
-                    tmpTable.add(newColonExpr(arg[0].toStrLit, arg[1].toStrLit))
-            else: discard
-        if tmpTable.len > 0:
-            result.add(newNimNode(nnkExprEqExpr).add(ident("params"), newCall("newTable", tmpTable)))
-
-
+macro `@`* (api: VkApi | AsyncVkApi, body: untyped): untyped =
+  ## `@` macro gives you the ability to make API calls in more convenient manner
+  ##
+  ## Left argument is ``VkApi`` or ``AsyncVkApi`` object. 
+  ## Right one is a namespace and method name separated by dot.
+  ##
+  ## And finally in parentheses you can specify any number of named arguments.
+  ##
+  ##
+  ## This macro is transformed into ``apiRequest`` call with parameters 
+  ##
+  ## Example:
+  ##
+  ## .. code-block:: Nim
+  ##    echo api@friends.getOnline()
+  ##    echo api@fave.getPosts(count=1, offset=50)
+  assert body.kind == nnkCall
+  # Let's create a table, which will have API parameters
+  var table = newNimNode(nnkTableConstr)
+  # Full API method name
+  let name = body[0].toStrLit
+  # Check all arguments inside of call
+  for arg in body.children:
+    # If it's a equality expression "abcd=something"
+    if arg.kind == nnkExprEqExpr:
+      # We need to convert value to the appropriate format
+      let value = if arg[1].kind in {nnkIdent, nnkStrLit}: arg[1]
+                  else: arg[1].toStrLit
+      # Add it to our API parameters table 
+      table.add(newColonExpr(arg[0].toStrLit, value))
+  # Finally create a statement to call API
+  result = quote do:
+    `api`.apiRequest(`name`, `table`.toApi)
