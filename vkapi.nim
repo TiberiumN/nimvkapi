@@ -120,8 +120,6 @@ macro `@`* (name: typed, body: untyped): untyped =
     result.add(ident("api_request"))
     if body.kind != nnkCall:
         quit "Syntax error"
-    if body[0].kind != nnkDotExpr:
-        quit "Syntax error"
     result.add(name)
     result.add(body[0].toStrLit)
     if body.len > 1:
