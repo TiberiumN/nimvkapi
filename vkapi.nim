@@ -233,14 +233,11 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   # Copy API object
   var api = api
 
-  proc getData(n: NimNode): NimNode {.compiletime.} =
+  proc getData(n: NimNode): NimNode =
     # Table with API parameters
     var table = newNimNode(nnkTableConstr)
-    # Assert it's really what we're looking for
-    assert n.kind == nnkCall
     # Name of method call
     let name = n[0].toStrLit
-    # For every children
     for arg in n.children:
       # If it's a equality expression "abcd=something"
       if arg.kind == nnkExprEqExpr:
@@ -250,15 +247,15 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     result = quote do: 
       `api`.request(`name`, `table`.toApi)
   
-  template isNeeded(n: NimNode): bool {.dirty.} = 
+  template isNeeded(n: NimNode): bool = 
     ## Returns true if NimNode is something like "users.get(user_id=1)"
     (n.kind == nnkCall and
      n.len > 1 and
      n[0].kind == nnkDotExpr and 
      n[1].kind == nnkExprEqExpr)
   
-  proc findNeeded(n: NimNode) {.compiletime.} =
-    var i = 0 # index 
+  proc findNeeded(n: NimNode) =
+    var i = 0
     # For every children
     for child in n.children:
       # If it's the children we're looking for
