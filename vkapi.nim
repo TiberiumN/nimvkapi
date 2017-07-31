@@ -136,7 +136,7 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
   ## - ``password`` - VK password
   ## - ``code`` - if you have 2-factor auth, you need to provide your 2-factor code
   ## - ``scope`` - authentication scope, default is "all"
-  ## Example:
+  ## Example of usage:
   ##
   ## .. code-block:: Nim
   ##    let api = newVkApi()
@@ -231,22 +231,58 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ##
   ## This macro is transformed into ``apiRequest`` call with parameters 
   ##
-  ## Example:
+  ## Some examples:
   ##
   ## .. code-block:: Nim
   ##    echo api@friends.getOnline()
   ##    echo api@fave.getPosts(count=1, offset=50)
-  assert body.kind == nnkCall
-  # Let's create a table, which will have API parameters
-  var table = newNimNode(nnkTableConstr)
-  # Full API method name
-  let name = body[0].toStrLit
-  # Check all arguments inside of call
-  for arg in body.children:
-    # If it's a equality expression "abcd=something"
-    if arg.kind == nnkExprEqExpr:
-      # Convert key to string, and call $ for value to convert it to string
-      table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
-  # Finally create a statement to call API
-  result = quote do:
-    `api`.apiRequest(`name`, `table`.toApi)
+  # Copy input
+  var input = copyNimTree(body)
+  # Copy API object
+  var api = api
+
+  proc getData(n: NimNode): NimNode {.compiletime.} =
+    # Let's create a table, which will have API parameters
+    var table = newNimNode(nnkTableConstr)
+    # Assert it's really what's we're looking for
+    assert n.kind == nnkCall
+    # Name of method call
+    let name = n[0].toStrLit
+    # For every children
+    for arg in n.children:
+      # If it's a equality expression "abcd=something"
+      if arg.kind == nnkExprEqExpr:
+        # Convert key to string, and call $ for value to convert it to string
+        table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
+    # Generate result
+    result = quote do: 
+      `api`.apiRequest(`name`, `table`.toApi)
+  
+  template isNeeded(n: NimNode): bool {.dirty.} = 
+    ## Returns true if NimNode is something like "users.get(user_id=1)"
+    (n.kind == nnkCall and 
+     n[0].kind == nnkDotExpr and 
+     n[1].kind == nnkExprEqExpr)
+  
+  proc findDotCall(n: NimNode) {.compiletime.} =
+    var i = 0 # index 
+    # For every children
+    for child in n.children:
+      # If it's the children we're looking for
+      if child.isNeeded():
+        # Modify our children with generated info
+        n[i] = child.getData().copyNimTree()
+      else:
+        # Recursively call findDotCall on child
+        child.findDotCall()
+      inc i  # increment index
+  
+  # If our input has more than 1 children and it's that we're looking for
+  if input.len > 1 and input.isNeeded():
+    # Generate needed info
+    return input.getData()
+  
+  # Find needed NimNode in input, and replace it here
+  input.findDotCall()
+  # Return our input
+  return input

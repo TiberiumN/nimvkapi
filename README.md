@@ -1,71 +1,42 @@
-# nimvkapi
-Contains a wrapper for the vk.com API written in nim lang
+# NimVkApi
 
-This module is a wrapper for vk.com API.
+Documentation can be found [here](https://tiberiumn.github.io/nimvkapi/)
+This is the wrapper for vk.com API written in @nim-lang
 It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
-
 In addition this module exposes macro ``@`` to ease calling API methods
 
-> vk.com uses https, so you need to use `-d:ssl` compilation flag
->
-> Example: `nim c -d:ssl -r myvkapp.nim`
+**vk.com API works only on HTTPS, so you need to use `-d:ssl` compilation flag:**
+Example: `nim c -d:ssl myapp.nim`
 
-Here is some examples of how to use this module
+Here are some simple examples:
 
-Initialization:
+Get first name of Pavel Durov, creator of VK social network
 ```nim
 import vkapi
-
-# Synchronous VK API
-let api = newVkApi(token="you access token here")
-
-# Asynchronous VK API
-let asyncApi = newAsyncVkApi(token="you access token here")
+# We can use VK API without any token
+# Create new API object
+let api = newVkApi()
+# Call users.get method with user_id = 1 parameter
+let data = api.apiRequest("users.get", {"user_id": "1"}.toApi)
+# data is JsonNode, so we'll need to get first element from this json array
+# and get first_name field. You can go to VK API documentation for info
+# on object fields
+echo data[0]["first_name"].str
 ```
 
-Synchronous VK API examples:
+This example can be also rewritten using `@` macro:
+
 ```nim
-# simple apiRequest
-echo api.apiRequest("friends.getOnline")
-echo api.apiRequest("fave.getPosts", {"count": "1"}.toApi)
-echo api.apiRequest("wall.post", {"friends_only"="1", "message"="Hello world from nim-lang"}.toApi)
-
-# awesome beautiful macros
-echo api@friends.getOnline()
-echo api@fave.getPosts(count=1)
-echo api@wall.post(friends_only=1, message="Hello world fom nim-lang")
+import vkapi
+let api = newVkApi()
+echo api@users.get(user_id=1)[0]["first_name"].str
 ```
 
-Asynchronous VK API examples:
+Prints IDs of all your friends, who is currently online from the phone:
 ```nim
-import asyncdispatch
-echo waitFor asyncApi.apiRequest("wall.get", {"count": "1"}.toApi)
-echo waitFor asyncApi@wall.get(count=1)
+import vkapi
+let api = newVkApi()
+api.login("your login", "your password")
+for id in api@friends.getOnline(online_mobile=1)["online_mobile"]:
+  echo id
 ```
-
-## `@` macro
-
-`@` macro gives you the ability to make API calls in more convenient manner
-
-Left argument is ``VkApi`` or ``AsyncVkApi`` object. Right is a namespace and method name separated by dot.
-
-And finally in parentheses you can specify any number of named arguments.
-
-`@` macro converts your requests to ``apiRequest`` calls
-Example:
-```nim
-echo api@friends.getOnline()
-echo api@fave.getPosts(count=1, offset=50)
-echo api@wall.post(friends_only=1, message="Hello world fom nim-lang")
-```
-
-## How to get access key for API
-To use vk.com api. You need to get `access_key`. 
-
-All information you can get on [Vk manual page](https://vk.com/dev/manuals)
-
-Firstly you need to create your own Standalone Application
-
-You can find other information about access key [here](https://vk.com/dev/first_guide).
-
-And [here](https://vk.com/dev/methods) you can find all available VK API methods

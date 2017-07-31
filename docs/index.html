@@ -1424,7 +1424,7 @@ Login in VK using login and password (optionally 2-factor code)<ul class="simple
 <li><tt class="docutils literal"><span class="pre">code</span></tt> - if you have 2-factor auth, you need to provide your 2-factor code</li>
 <li><tt class="docutils literal"><span class="pre">scope</span></tt> - authentication scope, default is &quot;all&quot;</li>
 </ul>
-<p>Example:</p>
+<p>Example of usage:</p>
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">api</span> <span class="Operator">=</span> <span class="Identifier">newVkApi</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">users</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
@@ -1463,7 +1463,7 @@ class="link-seesrc" target="_blank">Source</a>
 <p>Left argument is <tt class="docutils literal"><span class="pre">VkApi</span></tt> or <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt> object. Right one is a namespace and method name separated by dot.</p>
 <p>And finally in parentheses you can specify any number of named arguments.</p>
 <p>This macro is transformed into <tt class="docutils literal"><span class="pre">apiRequest</span></tt> call with parameters</p>
-<p>Example:</p>
+<p>Some examples:</p>
 <pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">friends</span><span class="Operator">.</span><span class="Identifier">getOnline</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">fave</span><span class="Operator">.</span><span class="Identifier">getPosts</span><span class="Punctuation">(</span><span class="Identifier">count</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="Identifier">offset</span><span class="Operator">=</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
 &nbsp;&nbsp;<a
@@ -1496,7 +1496,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2017-07-31 18:00:11 UTC</small>
+        <small>Made with Nim. Generated: 2017-07-31 20:02:27 UTC</small>
       </div>
     </div>
   </div>
