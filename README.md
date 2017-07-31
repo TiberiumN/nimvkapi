@@ -1,74 +1,71 @@
 # nimvkapi
 Contains a wrapper for the vk.com API written in nim lang
 
-This module is wrapper for vk.com API.
-It gives ability to call vk.com API method using synchronius and asynchronius approach.
+This module is a wrapper for vk.com API.
+It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
 
-In addition this module exposes macros ``@`` to make API calls in more convenient manner
+In addition this module exposes macro ``@`` to ease calling API methods
 
-
-> vk.com uses https that is why you need to use `-d:ssl` compile flag
+> vk.com uses https, so you need to use `-d:ssl` compilation flag
 >
 > Example: `nim c -d:ssl -r myvkapp.nim`
 
-Here is examples of how to use this module
+Here is some examples of how to use this module
 
 Initialization:
 ```nim
 import vkapi
 
-# Sync VkApi
-var vk_api = initVkApi(access_key="you key here")
+# Synchronous VK API
+let api = newVkApi(token="you access token here")
 
-# Async VkApi
-var async_vk_api = initAsyncVkApi(access_key="you key here")
+# Asynchronous VK API
+let asyncApi = newAsyncVkApi(token="you access token here")
 ```
 
-Sync examples with simple ``api_request`` calls, and macros calls:
+Synchronous VK API examples:
 ```nim
-# simple api_request
-echo vk_api.api_request("friends.getOnline")
-echo vk_api.api_request("fave.getPosts", {"count": "1"}.newTable)
-echo vk_api.api_request("wall.post", {"friends_only"="1", "message"="Hello world fom nim-lang"}.newTable)
+# simple apiRequest
+echo api.apiRequest("friends.getOnline")
+echo api.apiRequest("fave.getPosts", {"count": "1"}.toApi)
+echo api.apiRequest("wall.post", {"friends_only"="1", "message"="Hello world from nim-lang"}.toApi)
 
 # awesome beautiful macros
-echo vk_api@friends.getOnline()
-echo vk_api@fave.getPosts(count=1)
-vk_api@wall.post(friends_only=1, message="Hello world fom nim-lang")
+echo api@friends.getOnline()
+echo api@fave.getPosts(count=1)
+echo api@wall.post(friends_only=1, message="Hello world fom nim-lang")
 ```
 
-Async examples with simple ``api_request`` calls, and macros calls:
+Asynchronous VK API examples:
 ```nim
 import asyncdispatch
-echo waitFor async_vk_api.api_request("wall.get", {"count": "1"}.newTable)
-echo waitFor async_vk_api@wall.get(count=1)
+echo waitFor asyncApi.apiRequest("wall.get", {"count": "1"}.toApi)
+echo waitFor asyncApi@wall.get(count=1)
 ```
 
-## macros
+## `@` macro
 
-`@` macros gives ability to make API calls in more convenient manner
+`@` macro gives you the ability to make API calls in more convenient manner
 
-This is infix macros.
+Left argument is ``VkApi`` or ``AsyncVkApi`` object. Right is a namespace and method name separated by dot.
 
-Left argument is ``VkApi`` or ``AsyncVkApi`` object. Right is namespace and method name separated by dot.
+And finally in parentheses you can specify any number of named arguments.
 
-And finaly in parentheses you can specify any number of named arguments.
-
-`@` macros converts to ``api_equest`` and makes request to API
+`@` macro converts your requests to ``apiRequest`` calls
 Example:
 ```nim
-echo vk_api@friends.getOnline()
-echo vk_api@fave.getPosts(count=1, offset=50)
-echo vk_api@wall.post(friends_only=1, message="Hello world fom nim-lang")
+echo api@friends.getOnline()
+echo api@fave.getPosts(count=1, offset=50)
+echo api@wall.post(friends_only=1, message="Hello world fom nim-lang")
 ```
 
-## Vk api 
+## How to get access key for API
 To use vk.com api. You need to get `access_key`. 
 
 All information you can get on [Vk manual page](https://vk.com/dev/manuals)
 
-First you need to create Standalone Application
+Firstly you need to create your own Standalone Application
 
-How to get `access_key` you can find [here](https://vk.com/dev/first_guide).
+You can find other information about access key [here](https://vk.com/dev/first_guide).
 
-And [here](https://vk.com/dev/methods) all vk.com methods. You can use all this methods with this wrapper.
+And [here](https://vk.com/dev/methods) you can find all available VK API methods
