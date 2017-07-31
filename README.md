@@ -1,19 +1,21 @@
-# NimVkApi
+# VK API for Nim
 
 Documentation can be found [here](https://tiberiumn.github.io/nimvkapi/)
+
 This is the wrapper for vk.com API written in @nim-lang
 It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
+
 In addition this module exposes macro ``@`` to ease calling API methods
 
 **vk.com API works only on HTTPS, so you need to use `-d:ssl` compilation flag:**
-Example: `nim c -d:ssl myapp.nim`
+> `nim c -d:ssl myapp.nim`
 
-Here are some simple examples:
+Here are some simple examples of usage:
 
-Get first name of Pavel Durov, creator of VK social network
+Get first name of Pavel Durov, creator of the VK social network
 ```nim
 import vkapi
-# We can use VK API without any token
+# We can some VK API methods without authorization
 # Create new API object
 let api = newVkApi()
 # Call users.get method with user_id = 1 parameter
@@ -32,7 +34,7 @@ let api = newVkApi()
 echo api@users.get(user_id=1)[0]["first_name"].str
 ```
 
-Prints IDs of all your friends, who is currently online from the phone:
+Prints IDs of all your friends who is currently online from the phone:
 ```nim
 import vkapi
 let api = newVkApi()
