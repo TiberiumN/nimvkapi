@@ -99,10 +99,6 @@ proc encode(params: StringTableRef): string =
     parts.add($enck & "=" & $encv)
   result.add(parts.join("&"))
 
-template toApi*(data: untyped): StringTableRef = 
-  ## Shortcut for newStringTable to create arguments for apiRequest call
-  data.newStringTable()
-
 proc apiRequest*(api: VkApi | AsyncVkApi, name: string, 
                  params = newStringTable()): Future[string] {.multisync.} =
   ## Main method for  VK API requests.
