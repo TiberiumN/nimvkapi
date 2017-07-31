@@ -29,9 +29,9 @@
 ## ====================
 ##
 ## .. code-block:: Nim
-##    echo api.apiRequest("friends.getOnline")
-##    echo api.apiRequest("fave.getPosts", {"count": "1"}.newTable)
-##    echo api.apiRequest("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
+##    echo api.request("friends.getOnline")
+##    echo api.request("fave.getPosts", {"count": "1"}.newTable)
+##    echo api.request("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
 ##
 ##    echo api@friends.getOnline()
 ##    echo api@fave.getPosts(count=1)
@@ -42,7 +42,7 @@
 ##
 ## .. code-block:: Nim
 ##    import asyncdispatch
-##    echo waitFor asyncApi.apiRequest("wall.get", {"count": "1"}.toApi)
+##    echo waitFor asyncApi.request("wall.get", {"count": "1"}.toApi)
 ##    echo waitFor asyncApi@wall.get(count=1)
 
 # HTTP client
@@ -62,18 +62,6 @@ import cgi
 import strtabs
 export strtabs
 
-
-const 
-  VkUrl* = "https://api.vk.com/method/"  ## Default API url for vk.com API method calls
-
-  ApiVer* = "5.67" ## Default API version
-
-  AuthScope = "all" ## Default authorization scope
-
-  ClientId = "3140623"  ## Client ID (VK iPhone app)
-
-  ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## VK iPhone app client secret
-
 type
   VkApiBase*[HttpType] = ref object  ## VK API object base
     token*: string  ## VK API token
@@ -88,6 +76,20 @@ type
 
   VkApiError* = object of Exception  ## VK API Error
 
+const 
+  VkUrl* = "https://api.vk.com/method/"  ## Default API url for vk.com API method calls
+  ApiVer* = "5.67" ## Default API version
+  AuthScope = "all" ## Default authorization scope
+  ClientId = "3140623"  ## Client ID (VK iPhone app)
+  ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## VK iPhone app client secret
+
+
+
+proc sharedInit(base: VkApiBase, tok, ver, url: string) = 
+  base.token = tok
+  base.version = ver
+  base.url = url
+
 proc newVkApi*(token = "", version = ApiVer, url = VkUrl): VkApi =
   ## Initialize ``VkApi`` object.
   ##
@@ -95,9 +97,7 @@ proc newVkApi*(token = "", version = ApiVer, url = VkUrl): VkApi =
   ## - ``version`` - VK API version
   ## - ``url`` - VK API url
   new(result)
-  result.token = token
-  result.url = url
-  result.version = version
+  result.sharedInit(token, version, url)
   result.client = newHttpClient()
 
 proc newAsyncVkApi*(token = "", version = ApiVer, url = VkUrl): AsyncVkApi =
@@ -107,9 +107,7 @@ proc newAsyncVkApi*(token = "", version = ApiVer, url = VkUrl): AsyncVkApi =
   ## - ``version`` - VK API version
   ## - ``url`` - VK API url
   new(result)
-  result.token = token
-  result.url = url
-  result.version = version
+  result.sharedInit(token, version, url)
   result.client = newAsyncHttpClient()
 
 proc encode(params: StringTableRef): string =
@@ -159,11 +157,11 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
   # Send our requests. We don't use postContent since VK can answer 
   # with other HTTP response codes than 200
   let resp = await api.client.post("https://oauth.vk.com/token", 
-                                   body=data.encode())
+                                    body=data.encode())
   # Parse answer as JSON. We need this `when` statement because with
   # async http client we need "await" body of the response
   let answer = when resp is AsyncResponse: parseJson(await resp.body)
-             else: parseJson(resp.body)
+               else: parseJson(resp.body)
   if "error" in answer:
     # If some error happened
     raise newException(VkApiError, answer["error_description"].str)
@@ -171,12 +169,12 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
     # Set VK API token
     api.token = answer["access_token"].str
 
-template toApi*(data: untyped): StringTableRef = 
-  ## Shortcut for newStringTable to create arguments for apiRequest call
+proc toApi*(data: openarray[tuple[key, val: string]]): StringTableRef = 
+  ## Shortcut for newStringTable to create arguments for request call
   data.newStringTable()
 
-proc apiRequest*(api: VkApi | AsyncVkApi, name: string, 
-                 params = newStringTable()): Future[JsonNode] {.multisync.} =
+proc request*(api: VkApi | AsyncVkApi, name: string, 
+              params = newStringTable()): Future[JsonNode] {.multisync, discardable.} =
   ## Main method for  VK API requests.
   ##
   ## - ``api`` - API object (``VkApi`` or ``AsyncVkApi``)
@@ -186,9 +184,9 @@ proc apiRequest*(api: VkApi | AsyncVkApi, name: string,
   ## Examples:
   ##
   ## .. code-block:: Nim
-  ##    echo api.apiRequest("friends.getOnline")
-  ##    echo api.apiRequest("fave.getPosts", {"count": "1"}.toApi)
-  ##    echo api.apiRequest("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
+  ##    echo api.request("friends.getOnline")
+  ##    echo api.request("fave.getPosts", {"count": "1"}.toApi)
+  ##    api@wall.post(friends_only=1, message="Hello world from nim-lang!")
   params["v"] = api.version
   params["access_token"] = api.token
   # Send request to API
@@ -223,28 +221,22 @@ proc apiRequest*(api: VkApi | AsyncVkApi, name: string,
 macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ## `@` macro gives you the ability to make API calls in more convenient manner
   ##
-  ## Left argument is ``VkApi`` or ``AsyncVkApi`` object. 
-  ## Right one is a namespace and method name separated by dot.
-  ##
-  ## And finally in parentheses you can specify any number of named arguments.
-  ##
-  ##
-  ## This macro is transformed into ``apiRequest`` call with parameters 
+  ## This macro is transformed into ``request`` call with parameters 
   ##
   ## Some examples:
   ##
   ## .. code-block:: Nim
   ##    echo api@friends.getOnline()
   ##    echo api@fave.getPosts(count=1, offset=50)
-  # Copy input
+  # Copy input, so we can modify it
   var input = copyNimTree(body)
   # Copy API object
   var api = api
 
   proc getData(n: NimNode): NimNode {.compiletime.} =
-    # Let's create a table, which will have API parameters
+    # Table with API parameters
     var table = newNimNode(nnkTableConstr)
-    # Assert it's really what's we're looking for
+    # Assert it's really what we're looking for
     assert n.kind == nnkCall
     # Name of method call
     let name = n[0].toStrLit
@@ -256,7 +248,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
         table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
     # Generate result
     result = quote do: 
-      `api`.apiRequest(`name`, `table`.toApi)
+      `api`.request(`name`, `table`.toApi)
   
   template isNeeded(n: NimNode): bool {.dirty.} = 
     ## Returns true if NimNode is something like "users.get(user_id=1)"
@@ -264,7 +256,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
      n[0].kind == nnkDotExpr and 
      n[1].kind == nnkExprEqExpr)
   
-  proc findDotCall(n: NimNode) {.compiletime.} =
+  proc findNeeded(n: NimNode) {.compiletime.} =
     var i = 0 # index 
     # For every children
     for child in n.children:
@@ -274,7 +266,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
         n[i] = child.getData().copyNimTree()
       else:
         # Recursively call findDotCall on child
-        child.findDotCall()
+        child.findNeeded()
       inc i  # increment index
   
   # If our input has more than 1 children and it's that we're looking for
@@ -283,6 +275,6 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     return input.getData()
   
   # Find needed NimNode in input, and replace it here
-  input.findDotCall()
+  input.findNeeded()
   # Return our input
   return input

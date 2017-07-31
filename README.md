@@ -19,7 +19,7 @@ import vkapi
 # Create new API object
 let api = newVkApi()
 # Call users.get method with user_id = 1 parameter
-let data = api.apiRequest("users.get", {"user_id": "1"}.toApi)
+let data = api.request("users.get", {"user_id": "1"}.toApi)
 # data is JsonNode, so we'll need to get first element from this json array
 # and get first_name field. You can go to VK API documentation for info
 # on object fields
@@ -34,7 +34,14 @@ let api = newVkApi()
 echo api@users.get(user_id=1)[0]["first_name"].str
 ```
 
-Prints IDs of all your friends who is currently online from the phone:
+Add "Hello world from Nim Language!" post to your wall. Only you and your friends could see it:
+```nim
+let api = newVkApi()
+api.login("login", "password")
+api@wall.post(friends_only=1, message="Hello world from Nim Language!")
+```
+
+Print IDs of all your friends who is currently online from the phone:
 ```nim
 import vkapi
 let api = newVkApi()
