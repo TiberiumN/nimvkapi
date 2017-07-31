@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.2.0"
+version       = "1.2.1"
 author        = "TiberiumN (Daniil Yarancev) and cyberlis (Denis Lisovik)"
 description   = "Wrapper for vk.com API"
 license       = "MIT"

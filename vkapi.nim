@@ -2,7 +2,7 @@
 ##
 ## It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
 ##
-## In addition this module exposes macro ``@`` to ease calling API methods
+## In addition this module exposes macro ``@`` to ease calling of the API methods
 ##
 ## Initialization
 ## ====================
@@ -252,7 +252,8 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   
   template isNeeded(n: NimNode): bool {.dirty.} = 
     ## Returns true if NimNode is something like "users.get(user_id=1)"
-    (n.kind == nnkCall and 
+    (n.kind == nnkCall and
+     n.len > 1 and
      n[0].kind == nnkDotExpr and 
      n[1].kind == nnkExprEqExpr)
   
@@ -269,8 +270,8 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
         child.findNeeded()
       inc i  # increment index
   
-  # If our input has more than 1 children and it's that we're looking for
-  if input.len > 1 and input.isNeeded():
+  # If we're looking for that input
+  if input.isNeeded():
     # Generate needed info
     return input.getData()
   

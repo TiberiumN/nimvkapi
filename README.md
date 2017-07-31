@@ -49,3 +49,20 @@ api.login("your login", "your password")
 for id in api@friends.getOnline(online_mobile=1)["online_mobile"]:
   echo id
 ```
+
+In what cities you have most of your friends?
+```nim
+import vkapi, strutils, tables
+
+let api = newVkApi()
+let table = newCountTable[string]()
+api.login("login", "password")
+
+for friend in api@friends.get(fields="city")["items"]:
+  if "city" in friend:
+    table.inc friend["city"]["title"].str
+
+table.sort()
+for key, val in table:
+  echo("$1 people lives in $2" % [key, $val])
+```
