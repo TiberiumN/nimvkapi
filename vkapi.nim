@@ -263,7 +263,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
         # Modify our children with generated info
         n[i] = child.getData().copyNimTree()
       else:
-        # Recursively call findDotCall on child
+        # Recursively call findNeeded on child
         child.findNeeded()
       inc i  # increment index
   

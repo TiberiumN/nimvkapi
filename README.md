@@ -64,5 +64,5 @@ for friend in api@friends.get(fields="city")["items"]:
 
 table.sort()
 for key, val in table:
-  echo("$1 people lives in $2" % [key, $val])
+  echo("$1 people lives in $2" % [$val, key])
 ```
