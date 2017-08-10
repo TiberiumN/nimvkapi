@@ -50,7 +50,7 @@ import httpclient
 # JSON parsing
 import json
 export json
-# `join` procedure
+# `join` and `editDistance` procedures
 import strutils
 # Async and multisync features
 import asyncdispatch
@@ -218,6 +218,17 @@ proc request*(api: VkApi | AsyncVkApi, name: string,
   result = data.getOrDefault("response")
   if result.isNil(): result = data
 
+var methods {.compiletime.} = staticRead("methods.txt").split(",")
+
+proc suggestedMethod(name: string): string {.compiletime.} = 
+  ## Find suggested method name (with Levenshtein distance)
+  var lastDist = 100500
+  for entry in methods:
+    let dist = editDistance(name, entry)
+    if dist < lastDist:
+      result = entry
+      lastDist = dist
+
 macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ## `@` macro gives you the ability to make API calls in more convenient manner
   ##
@@ -238,6 +249,14 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     var table = newNimNode(nnkTableConstr)
     # Name of method call
     let name = n[0].toStrLit
+    # If there's no such method in VK API (all methods are stored in methods.txt)
+    if $name notin methods:
+      
+      let sugg = suggestedMethod($name)
+      raise newException(
+        ValueError, 
+        "There's no \"$1\" VK API method. Did you mean \"$2\"?" % [$name, sugg]
+      )
     for arg in n.children:
       # If it's a equality expression "abcd=something"
       if arg.kind == nnkExprEqExpr:
@@ -248,11 +267,9 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
       `api`.request(`name`, `table`.toApi)
   
   template isNeeded(n: NimNode): bool = 
-    ## Returns true if NimNode is something like "users.get(user_id=1)"
-    (n.kind == nnkCall and
-     n.len > 1 and
-     n[0].kind == nnkDotExpr and 
-     n[1].kind == nnkExprEqExpr)
+    ## Returns true if NimNode is something like 
+    ## "users.get(user_id=1)" or "users.get()" or "execute()"
+    n.kind == nnkCall and (n[0].kind == nnkDotExpr or $n[0] == "execute")
   
   proc findNeeded(n: NimNode) =
     var i = 0
@@ -271,8 +288,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   if input.isNeeded():
     # Generate needed info
     return input.getData()
-  
-  # Find needed NimNode in input, and replace it here
-  input.findNeeded()
-  # Return our input
-  return input
+  else:
+    # Find needed NimNode in input, and replace it here
+    input.findNeeded()
+    return input
