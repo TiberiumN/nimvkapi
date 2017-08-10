@@ -234,6 +234,9 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ##
   ## This macro is transformed into ``request`` call with parameters 
   ##
+  ## Also this macro checks if provided method name is valid, and gives
+  ## suggestions if it's not
+  ##
   ## Some examples:
   ##
   ## .. code-block:: Nim
@@ -244,20 +247,20 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   # Copy API object
   var api = api
 
-  proc getData(n: NimNode): NimNode =
+  proc getData(node: NimNode): NimNode =
     # Table with API parameters
     var table = newNimNode(nnkTableConstr)
     # Name of method call
-    let name = n[0].toStrLit
+    let name = node[0].toStrLit
     # If there's no such method in VK API (all methods are stored in methods.txt)
     if $name notin methods:
-      
       let sugg = suggestedMethod($name)
-      raise newException(
-        ValueError, 
-        "There's no \"$1\" VK API method. Did you mean \"$2\"?" % [$name, sugg]
+      error(
+        "There's no \"$1\" VK API method. " % $name &
+        "Did you mean \"$1\"?" % sugg, 
+        node # Provide node where error happened (so there would be line info)
       )
-    for arg in n.children:
+    for arg in node.children:
       # If it's a equality expression "abcd=something"
       if arg.kind == nnkExprEqExpr:
         # Convert key to string, and call $ for value to convert it to string

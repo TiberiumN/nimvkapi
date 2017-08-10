@@ -1322,37 +1322,21 @@ function main() {
   </pre></dt>
 <dd>
 VK API object base
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L66"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L66" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="VkApi"><a name="VkApi"></a><pre><span class="Identifier">VkApi</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">VkApiBase</span><span class="Other">[</span><span class="Identifier">HttpClient</span><span class="Other">]</span></pre></dt>
 <dd>
 VK API object for doing synchronous requests
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L73"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L73" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="AsyncVkApi"><a name="AsyncVkApi"></a><pre><span class="Identifier">AsyncVkApi</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">VkApiBase</span><span class="Other">[</span><span class="Identifier">AsyncHttpClient</span><span class="Other">]</span></pre></dt>
 <dd>
 VK API object for doing asynchronous requests
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L75"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L75" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="VkApiError"><a name="VkApiError"></a><pre><span class="Identifier">VkApiError</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">Exception</span></pre></dt>
 <dd>
 VK API Error
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L77"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L77" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1363,19 +1347,11 @@ class="link-seesrc" target="_blank">Source</a>
 <dt id="VkUrl"><a name="VkUrl"></a><pre><span class="Identifier">VkUrl</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;https://api.vk.com/method/&quot;</span></pre></dt>
 <dd>
 Default API url for vk.com API method calls
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L80"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="ApiVer"><a name="ApiVer"></a><pre><span class="Identifier">ApiVer</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;5.67&quot;</span></pre></dt>
 <dd>
 Default API version
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L81"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1390,10 +1366,6 @@ Initialize <tt class="docutils literal"><span class="pre">VkApi</span></tt> obje
 <li><tt class="docutils literal"><span class="pre">url</span></tt> - VK API url</li>
 </ul>
 
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L93"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="newAsyncVkApi"><a name="newAsyncVkApi,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newAsyncVkApi</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">token</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">version</span> <span class="Other">=</span> <span class="Identifier">ApiVer</span><span class="Other">;</span> <span class="Identifier">url</span> <span class="Other">=</span> <span class="Identifier">VkUrl</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">AsyncVkApi</span></pre></dt>
@@ -1403,10 +1375,6 @@ Initialize <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt>
 <li><tt class="docutils literal"><span class="pre">url</span></tt> - VK API url</li>
 </ul>
 
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L103"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L103" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="login"><a name="login,,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">login</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <span class="Identifier">VkApi</span> <span class="Operator">|</span> <span class="Identifier">AsyncVkApi</span><span class="Other">;</span> <span class="Identifier">login</span><span class="Other">,</span> <span class="Identifier">password</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">code</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">scope</span> <span class="Other">=</span> <span class="Identifier">AuthScope</span><span class="Other">)</span> <span class="Other pragmabegin">{.</span><div class="pragma">
@@ -1422,19 +1390,11 @@ Login in VK using login and password (optionally 2-factor code)<ul class="simple
 <pre class="listing"><span class="Keyword">let</span> <span class="Identifier">api</span> <span class="Operator">=</span> <span class="Identifier">newVkApi</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">users</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L128"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="toApi"><a name="toApi,openarray[tuple[string,string]]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">toApi</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">openarray</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">key</span><span class="Other">,</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span></pre></dt>
 <dd>
 Shortcut for newStringTable to create arguments for request call
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L172"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L172" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <dt id="request"><a name="request,,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">request</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <span class="Identifier">VkApi</span> <span class="Operator">|</span> <span class="Identifier">AsyncVkApi</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">params</span> <span class="Other">=</span> <span class="Identifier">newStringTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span>
@@ -1449,10 +1409,6 @@ Main method for  VK API requests.<ul class="simple"><li><tt class="docutils lite
 <pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;friends.getOnline&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;fave.getPosts&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span><span class="StringLit">&quot;count&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">toApi</span><span class="Punctuation">)</span>
 <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">wall</span><span class="Operator">.</span><span class="Identifier">post</span><span class="Punctuation">(</span><span class="Identifier">friends_only</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="Identifier">message</span><span class="Operator">=</span><span class="StringLit">&quot;Hello world from nim-lang!&quot;</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L176"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L176" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1464,13 +1420,10 @@ class="link-seesrc" target="_blank">Source</a>
 <dd>
 <p><cite>@</cite> macro gives you the ability to make API calls in more convenient manner</p>
 <p>This macro is transformed into <tt class="docutils literal"><span class="pre">request</span></tt> call with parameters</p>
+<p>Also this macro checks if provided method name is valid, and gives suggestions if it's not</p>
 <p>Some examples:</p>
 <pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">friends</span><span class="Operator">.</span><span class="Identifier">getOnline</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">fave</span><span class="Operator">.</span><span class="Identifier">getPosts</span><span class="Punctuation">(</span><span class="Identifier">count</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="Identifier">offset</span><span class="Operator">=</span><span class="DecNumber">50</span><span class="Punctuation">)</span></pre>
-&nbsp;&nbsp;<a
-href="/tree/master/vkapi.nim#L221"
-class="link-seesrc" target="_blank">Source</a>
-<a href="/edit/devel/vkapi.nim#L221" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1483,7 +1436,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2017-07-31 22:22:44 UTC</small>
+        <small>Made with Nim. Generated: 2017-08-10 13:47:32 UTC</small>
       </div>
     </div>
   </div>
