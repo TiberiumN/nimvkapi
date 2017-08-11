@@ -66,64 +66,54 @@ type
   VkApiBase*[HttpType] = ref object  ## VK API object base
     token*: string  ## VK API token
     version*: string  ## VK API version
-    url*: string  ## VK API url
-    when HttpType is HttpClient: client: HttpClient
-    else: client: AsyncHttpClient
+    client: HttpType
   
   VkApi* = VkApiBase[HttpClient] ## VK API object for doing synchronous requests
   
   AsyncVkApi* = VkApiBase[AsyncHttpClient] ## VK API object for doing asynchronous requests
 
   VkApiError* = object of Exception  ## VK API Error
+  VkAuthError* = object of Exception
 
-const 
-  VkUrl* = "https://api.vk.com/method/"  ## Default API url for vk.com API method calls
+const
+  ApiUrl = "https://api.vk.com/method/"
   ApiVer* = "5.67" ## Default API version
   AuthScope = "all" ## Default authorization scope
   ClientId = "3140623"  ## Client ID (VK iPhone app)
-  ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## VK iPhone app client secret
+  ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## Client secret
 
-
-
-proc sharedInit(base: VkApiBase, tok, ver, url: string) = 
+proc sharedInit(base: VkApiBase, tok, ver: string) = 
   base.token = tok
   base.version = ver
-  base.url = url
 
-proc newVkApi*(token = "", version = ApiVer, url = VkUrl): VkApi =
+proc newVkApi*(token = "", version = ApiVer): VkApi =
   ## Initialize ``VkApi`` object.
   ##
   ## - ``token`` - your VK API access token
   ## - ``version`` - VK API version
   ## - ``url`` - VK API url
   new(result)
-  result.sharedInit(token, version, url)
+  result.sharedInit(token, version)
   result.client = newHttpClient()
 
-proc newAsyncVkApi*(token = "", version = ApiVer, url = VkUrl): AsyncVkApi =
+proc newAsyncVkApi*(token = "", version = ApiVer): AsyncVkApi =
   ## Initialize ``AsyncVkApi`` object.
   ##
   ## - ``token`` - your VK API access token
   ## - ``version`` - VK API version
   ## - ``url`` - VK API url
   new(result)
-  result.sharedInit(token, version, url)
+  result.sharedInit(token, version)
   result.client = newAsyncHttpClient()
 
 proc encode(params: StringTableRef): string =
-  ## Encodes parameters for POST request and returns POST request body
-  result = ""
+  ## Encodes parameters for POST request and returns request body
   var parts = newSeq[string]()
-  # For every key, value pair
-  for key, val in pairs(params):
-    # URL-encode key and value
-    let
-      enck = cgi.encodeUrl(key)
-      encv = cgi.encodeUrl(val)
+  for key, val in params:
     # Add encoded values to result
-    parts.add($enck & "=" & $encv)
+    parts.add(encodeUrl(key) & "=" & encodeUrl(val))
   # Join all values by "&" for POST request
-  result.add(parts.join("&"))
+  result = parts.join("&")
 
 proc login*(api: VkApi | AsyncVkApi, login, password: string, 
             code = "", scope = AuthScope) {.multisync.} = 
@@ -154,17 +144,15 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
   # If user has provided 2factor code, add it to parameters
   if code != "":
     data["code"] = code
-  # Send our requests. We don't use postContent since VK can answer 
+  # Send our request. We don't use postContent since VK can answer 
   # with other HTTP response codes than 200
-  let resp = await api.client.post("https://oauth.vk.com/token", 
+  let resp = await api.client.post("https://oauth.vk.com/token",
                                     body=data.encode())
-  # Parse answer as JSON. We need this `when` statement because with
-  # async http client we need "await" body of the response
-  let answer = when resp is AsyncResponse: parseJson(await resp.body)
-               else: parseJson(resp.body)
+  # Parse answer as JSON.
+  let answer = parseJson(await resp.body)
   if "error" in answer:
     # If some error happened
-    raise newException(VkApiError, answer["error_description"].str)
+    raise newException(VkAuthError, answer["error_description"].str)
   else:
     # Set VK API token
     api.token = answer["access_token"].str
@@ -173,8 +161,27 @@ proc toApi*(data: openarray[tuple[key, val: string]]): StringTableRef =
   ## Shortcut for newStringTable to create arguments for request call
   data.newStringTable()
 
-proc request*(api: VkApi | AsyncVkApi, name: string, 
-              params = newStringTable()): Future[JsonNode] {.multisync, discardable.} =
+
+proc getErrorMsg(err: JsonNode): string = 
+  case err["error_code"].num
+  of 3:
+    "Unknown VK API method"
+  of 5:
+    "Authorization failed: invalid access token"
+  of 6:
+    # TODO: RPS limiter
+    "Too many requests per second"
+  of 14:
+    # TODO: Captcha handler
+    "Captcha is required"
+  of 17:
+    "Need validation code"
+  else:
+    "Error code $1: $2 " % [$err["error_code"].num, err["error_msg"].str]
+  
+proc request*(api: VkApi | AsyncVkApi, 
+              name: string, params = newStringTable()): Future[JsonNode]
+             {.multisync, discardable.} =
   ## Main method for  VK API requests.
   ##
   ## - ``api`` - API object (``VkApi`` or ``AsyncVkApi``)
@@ -189,35 +196,18 @@ proc request*(api: VkApi | AsyncVkApi, name: string,
   ##    api@wall.post(friends_only=1, message="Hello world from nim-lang!")
   params["v"] = api.version
   params["access_token"] = api.token
-  # Send request to API
-  let body = await api.client.postContent(api.url & name, body=params.encode())
-  # Parse response as JSON
-  let data = body.parseJson()
+  # Send request to API and parse answer as JSON
+  let data = parseJson await api.client.postContent(
+    ApiUrl & name, body=params.encode()
+  )
+  let error = data.getOrDefault("error")
   # If some error happened
-  if "error" in data:
-    # Error object
-    let error = data["error"]
-    # Error code
-    let code = error["error_code"].num
-    case code
-    of 3:
-      raise newException(VkApiError, "Unknown VK API method")
-    of 5:
-      raise newException(VkApiError, "Authorization failed: invalid access token")
-    of 6:
-      # TODO: RPS limiter
-      raise newException(VkApiError, "Too many requests per second")
-    of 14:
-      # TODO: Captcha handler
-      raise newException(VkApiError, "Captcha is required")
-    of 17:
-      raise newException(VkApiError, "Need validation code")
-    else:
-      raise newException(VkApiError, "Error code $1: $2 " % [$code, 
-                         error["error_msg"].str])
+  if not error.isNil():
+    raise newException(VkApiError, getErrorMsg(error))
   result = data.getOrDefault("response")
   if result.isNil(): result = data
 
+# VK API method list (for compile-time checking)
 var methods {.compiletime.} = staticRead("methods.txt").split(",")
 
 proc suggestedMethod(name: string): string {.compiletime.} = 
@@ -234,8 +224,8 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ##
   ## This macro is transformed into ``request`` call with parameters 
   ##
-  ## Also this macro checks if provided method name is valid, and gives
-  ## suggestions if it's not
+  ## Also this macro checks in compile-time if provided method name is valid, 
+  ## and gives suggestions if it's not
   ##
   ## Some examples:
   ##
@@ -252,12 +242,12 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     var table = newNimNode(nnkTableConstr)
     # Name of method call
     let name = node[0].toStrLit
-    # If there's no such method in VK API (all methods are stored in methods.txt)
-    if $name notin methods:
-      let sugg = suggestedMethod($name)
+    let textName = $name
+    # If there's no such method in VK API (methods are stored in methods.txt)
+    if textName notin methods:
       error(
-        "There's no \"$1\" VK API method. " % $name &
-        "Did you mean \"$1\"?" % sugg, 
+        "There's no \"$1\" VK API method. " % textName &
+        "Did you mean \"$1\"?" % suggestedMethod(textName), 
         node # Provide node where error happened (so there would be line info)
       )
     for arg in node.children:
