@@ -1,6 +1,6 @@
 # VK API for Nim
 
-Documentation can be found [here](https://tiberiumn.github.io/nimvkapi/)
+Documentation can be found [here](https://yardanico.github.io/nimvkapi/)
 
 This is the wrapper for vk.com API written in @nim-lang
 It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
