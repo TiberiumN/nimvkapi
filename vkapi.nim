@@ -54,7 +54,7 @@ export json
 import strutils
 # Async and multisync features
 import asyncdispatch
-# `@` macro
+# AST operations
 import macros
 # URL encoding
 import cgi
@@ -77,7 +77,7 @@ type
 
 const
   ApiUrl = "https://api.vk.com/method/"
-  ApiVer* = "5.67" ## Default API version
+  ApiVer* = "5.68" ## Default API version
   AuthScope = "all" ## Default authorization scope
   ClientId = "3140623"  ## Client ID (VK iPhone app)
   ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## Client secret
@@ -116,7 +116,7 @@ proc encode(params: StringTableRef): string =
   result = parts.join("&")
 
 proc login*(api: VkApi | AsyncVkApi, login, password: string, 
-            code = "", scope = AuthScope) {.multisync.} = 
+            twoFactorCode = "", scope = AuthScope) {.multisync.} = 
   ## Login in VK using login and password (optionally 2-factor code)
   ##
   ## - ``api`` - VK API object
@@ -130,8 +130,7 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
   ##    let api = newVkApi()
   ##    api.login("your login", "your password")
   ##    echo api@users.get()
-  # Authorization data
-  let data = {
+  let authData = {
     "client_id": ClientId, 
     "client_secret": ClientSecret, 
     "grant_type": "password", 
@@ -141,26 +140,21 @@ proc login*(api: VkApi | AsyncVkApi, login, password: string,
     "v": ApiVer,
     "2fa-supported": "1"
   }.newStringTable()
-  # If user has provided 2factor code, add it to parameters
-  if code != "":
-    data["code"] = code
+  if twoFactorCode != "":
+    authData["code"] = twoFactorCode
   # Send our request. We don't use postContent since VK can answer 
   # with other HTTP response codes than 200
   let resp = await api.client.post("https://oauth.vk.com/token",
-                                    body=data.encode())
-  # Parse answer as JSON.
+                                    body=authData.encode())
   let answer = parseJson(await resp.body)
   if "error" in answer:
-    # If some error happened
     raise newException(VkAuthError, answer["error_description"].str)
   else:
-    # Set VK API token
     api.token = answer["access_token"].str
 
 proc toApi*(data: openarray[tuple[key, val: string]]): StringTableRef = 
   ## Shortcut for newStringTable to create arguments for request call
   data.newStringTable()
-
 
 proc getErrorMsg(err: JsonNode): string = 
   case err["error_code"].num
@@ -179,16 +173,16 @@ proc getErrorMsg(err: JsonNode): string =
   else:
     "Error code $1: $2 " % [$err["error_code"].num, err["error_msg"].str]
   
-proc request*(api: VkApi | AsyncVkApi, 
-              name: string, params = newStringTable()): Future[JsonNode]
+proc request*(api: VkApi | AsyncVkApi, name: string, 
+              params = newStringTable()): Future[JsonNode]
              {.multisync, discardable.} =
   ## Main method for  VK API requests.
   ##
   ## - ``api`` - API object (``VkApi`` or ``AsyncVkApi``)
   ## - ``name`` - namespace and method separated with dot (https://vk.com/dev/methods)
+  ## Examples:
   ## - ``params`` - StringTable with parameters
   ## - ``return`` - returns response as JsonNode object
-  ## Examples:
   ##
   ## .. code-block:: Nim
   ##    echo api.request("friends.getOnline")
@@ -207,8 +201,7 @@ proc request*(api: VkApi | AsyncVkApi,
   result = data.getOrDefault("response")
   if result.isNil(): result = data
 
-# VK API method list (for compile-time checking)
-var methods {.compiletime.} = staticRead("methods.txt").split(",")
+let methods {.compiletime.} = staticRead("methods.txt").split(",")
 
 proc suggestedMethod(name: string): string {.compiletime.} = 
   ## Find suggested method name (with Levenshtein distance)
@@ -220,11 +213,11 @@ proc suggestedMethod(name: string): string {.compiletime.} =
       lastDist = dist
 
 macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
-  ## `@` macro gives you the ability to make API calls in more convenient manner
+  ## `@` macro gives you the ability to make API calls using much more easier syntax
   ##
   ## This macro is transformed into ``request`` call with parameters 
   ##
-  ## Also this macro checks in compile-time if provided method name is valid, 
+  ## Also this macro checks if provided method name is valid, 
   ## and gives suggestions if it's not
   ##
   ## Some examples:
@@ -232,30 +225,25 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ## .. code-block:: Nim
   ##    echo api@friends.getOnline()
   ##    echo api@fave.getPosts(count=1, offset=50)
-  # Copy input, so we can modify it
-  var input = copyNimTree(body)
-  # Copy API object
+  # Copy API object so it wouldn't be a NimNode
   var api = api
 
   proc getData(node: NimNode): NimNode =
     # Table with API parameters
     var table = newNimNode(nnkTableConstr)
-    # Name of method call
-    let name = node[0].toStrLit
-    let textName = $name
-    # If there's no such method in VK API (methods are stored in methods.txt)
-    if textName notin methods:
+    let mName = node[0].toStrLit
+    let mNameStr = $mName
+    if mNameStr notin methods:
       error(
-        "There's no \"$1\" VK API method. " % textName &
-        "Did you mean \"$1\"?" % suggestedMethod(textName), 
-        node # Provide node where error happened (so there would be line info)
+        "There's no \"$1\" VK API method. " % mNameStr &
+        "Did you mean \"$1\"?" % suggestedMethod(mNameStr), 
+        node # Add current node to provide line info
       )
     for arg in node.children:
-      # If it's a equality expression "abcd=something"
-      if arg.kind == nnkExprEqExpr:
-        # Convert key to string, and call $ for value to convert it to string
-        table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
-    # Generate result
+      # We only accepts arguments like "abcd=something"
+      if arg.kind != nnkExprEqExpr: continue
+      # Convert key to string, and call $ for value to convert it to string
+      table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
     result = quote do: 
       `api`.request(`name`, `table`.toApi)
   
@@ -264,24 +252,11 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     ## "users.get(user_id=1)" or "users.get()" or "execute()"
     n.kind == nnkCall and (n[0].kind == nnkDotExpr or $n[0] == "execute")
   
-  proc findNeeded(n: NimNode) =
-    var i = 0
-    # For every children
+  proc findNeeded(n: NimNode): NimNode =
     for child in n.children:
-      # If it's the children we're looking for
       if child.isNeeded():
-        # Modify our children with generated info
-        n[i] = child.getData().copyNimTree()
+        result = child.getData().copyNimTree()
       else:
-        # Recursively call findNeeded on child
-        child.findNeeded()
-      inc i  # increment index
-  
-  # If we're looking for that input
-  if input.isNeeded():
-    # Generate needed info
-    return input.getData()
-  else:
-    # Find needed NimNode in input, and replace it here
-    input.findNeeded()
-    return input
+        result = child.findNeeded()
+
+  result = if isNeeded(body): getData(body) else: findNeeded(body)
