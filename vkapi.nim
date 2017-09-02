@@ -245,7 +245,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
       # Convert key to string, and call $ for value to convert it to string
       table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
     result = quote do: 
-      `api`.request(`name`, `table`.toApi)
+      `api`.request(`mName`, `table`.toApi)
   
   template isNeeded(n: NimNode): bool = 
     ## Returns true if NimNode is something like 
