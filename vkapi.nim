@@ -253,6 +253,7 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
     n.kind == nnkCall and (n[0].kind == nnkDotExpr or $n[0] == "execute")
   
   proc findNeeded(n: NimNode): NimNode =
+    result = n.copy()
     for child in n.children:
       if child.isNeeded():
         result = child.getData().copyNimTree()
