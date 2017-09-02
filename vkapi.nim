@@ -82,6 +82,9 @@ const
   ClientId = "3140623"  ## Client ID (VK iPhone app)
   ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## Client secret
 
+when not defined(ssl):
+  {.error: "You must compile your program with -d:ssl because VK API uses HTTPS"}
+
 proc sharedInit(base: VkApiBase, tok, ver: string) = 
   base.token = tok
   base.version = ver
@@ -227,8 +230,9 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
   ##    echo api@fave.getPosts(count=1, offset=50)
   # Copy API object so it wouldn't be a NimNode
   var api = api
+  result = body.copy()
 
-  proc getData(node: NimNode): NimNode =
+  proc getData(node: var NimNode) =
     # Table with API parameters
     var table = newNimNode(nnkTableConstr)
     let mName = node[0].toStrLit
@@ -244,20 +248,27 @@ macro `@`*(api: VkApi | AsyncVkApi, body: untyped): untyped =
       if arg.kind != nnkExprEqExpr: continue
       # Convert key to string, and call $ for value to convert it to string
       table.add(newColonExpr(arg[0].toStrLit, newCall("$", arg[1])))
-    result = quote do: 
-      `api`.request(`mName`, `table`.toApi)
+    node = quote do: 
+      `api`.request(`mName`, `table`.toApi())
   
   template isNeeded(n: NimNode): bool = 
     ## Returns true if NimNode is something like 
     ## "users.get(user_id=1)" or "users.get()" or "execute()"
     n.kind == nnkCall and (n[0].kind == nnkDotExpr or $n[0] == "execute")
   
-  proc findNeeded(n: NimNode): NimNode =
-    result = n.copy()
+  proc findNeeded(n: NimNode) =
+    var i = 0
+    # For every children
     for child in n.children:
+      # If it's the children we're looking for
       if child.isNeeded():
-        result = child.getData().copyNimTree()
+        # Modify our children with generated info
+        var child = child
+        child.getData()
+        n[i] = child
       else:
-        result = child.findNeeded()
-
-  result = if isNeeded(body): getData(body) else: findNeeded(body)
+        # Recursively call findNeeded on child
+        child.findNeeded()
+      inc i  # increment index
+  
+  if result.isNeeded(): result.getData() else: result.findNeeded()
