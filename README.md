@@ -18,6 +18,7 @@ import vkapi
 # We can some VK API methods without authorization
 # Create new API object
 let api = newVkApi()
+api.login("your login", "your password")
 # Call users.get method with user_id = 1 parameter
 let data = api.request("users.get", {"user_id": "1"}.toApi)
 # data is JsonNode, so we'll need to get first element from this json array
@@ -31,14 +32,15 @@ This example can be also rewritten using `@` macro:
 ```nim
 import vkapi
 let api = newVkApi()
-echo api@users.get(user_id=1)[0]["first_name"].str
+api.login("your login", "your password")
+echo api@users.get(user_id=1)[0]["first_name"].getStr()
 ```
 
 Add "Hello world from Nim Language!" post to your wall. Only you and your friends could see it:
 ```nim
 let api = newVkApi()
-api.login("login", "password")
-api@wall.post(friends_only=1, message="Hello world from Nim Language!")
+api.login("your login", "your password")
+api@wall.post(friends_only=1, message="Hello world from the Nim programming language!")
 ```
 
 Print IDs of all your friends who is currently online from the phone:
@@ -50,17 +52,17 @@ for id in api@friends.getOnline(online_mobile=1)["online_mobile"]:
   echo id
 ```
 
-In what cities you have most of your friends?
+In what cities most of your friends live?
 ```nim
 import vkapi, strutils, tables
 
 let api = newVkApi()
 let table = newCountTable[string]()
-api.login("login", "password")
+api.login("your login", "your password")
 
 for friend in api@friends.get(fields="city")["items"]:
   if "city" in friend:
-    table.inc friend["city"]["title"].str
+    table.inc friend["city"]["title"].getStr()
 
 table.sort()
 for key, val in table:

@@ -12,7 +12,7 @@
 <link rel="shortcut icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AAAAAAUAAAAF////AP///wD///8A////AP///wD///8A////AP///wD///8A////AAAAAAIAAABbAAAAlQAAAKIAAACbAAAAmwAAAKIAAACVAAAAWwAAAAL///8A////AP///wD///8A////AAAAABQAAADAAAAAYwAAAA3///8A////AP///wD///8AAAAADQAAAGMAAADAAAAAFP///wD///8A////AP///wAAAACdAAAAOv///wD///8A////AP///wD///8A////AP///wD///8AAAAAOgAAAJ3///8A////AP///wAAAAAnAAAAcP///wAAAAAoAAAASv///wD///8A////AP///wAAAABKAAAAKP///wAAAABwAAAAJ////wD///8AAAAAgQAAABwAAACIAAAAkAAAAJMAAACtAAAAFQAAABUAAACtAAAAkwAAAJAAAACIAAAAHAAAAIH///8A////AAAAAKQAAACrAAAAaP///wD///8AAAAARQAAANIAAADSAAAARf///wD///8AAAAAaAAAAKsAAACk////AAAAADMAAACcAAAAnQAAABj///8A////AP///wAAAAAYAAAAGP///wD///8A////AAAAABgAAACdAAAAnAAAADMAAAB1AAAAwwAAAP8AAADpAAAAsQAAAE4AAAAb////AP///wAAAAAbAAAATgAAALEAAADpAAAA/wAAAMMAAAB1AAAAtwAAAOkAAAD/AAAA/wAAAP8AAADvAAAA3gAAAN4AAADeAAAA3gAAAO8AAAD/AAAA/wAAAP8AAADpAAAAtwAAAGUAAAA/AAAA3wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADfAAAAPwAAAGX///8A////AAAAAEgAAADtAAAAvwAAAL0AAADGAAAA7wAAAO8AAADGAAAAvQAAAL8AAADtAAAASP///wD///8A////AP///wD///8AAAAAO////wD///8A////AAAAAIcAAACH////AP///wD///8AAAAAO////wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A//8AAP//AAD4HwAA7/cAAN/7AAD//wAAoYUAAJ55AACf+QAAh+EAAAAAAADAAwAA4AcAAP5/AAD//wAA//8AAA=="/>
 
 <!-- Google fonts -->
-<link href='https://fonts.googleapis.com/css?family=Raleway:400,600,900' rel='stylesheet' type='text/css'/>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,600,900' rel='stylesheet' type='text/css'/>
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600' rel='stylesheet' type='text/css'/>
 
 <!-- CSS -->
@@ -45,18 +45,19 @@ html {
 
 /* Where we want fancier font if available */
 h1, h2, h3, h4, h5, h6, p.module-desc, table.docinfo + blockquote p, table.docinfo blockquote p, h1 + blockquote p {
-  font-family: "Raleway", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif !important; }
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif !important; }
 
 h1.title {
   font-weight: 900; }
 
 body {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 20px;
-  color: #666;
-  background-color: rgba(252, 248, 244, 0.75); }
+  color: #444;
+  letter-spacing: 0.15px;
+  background-color: #FDFBFA; }
 
 /* Skeleton grid */
 .container {
@@ -172,8 +173,8 @@ cite {
   font-style: italic !important; }
 
 dt > pre {
-  border-color: rgba(0, 0, 0, 0.15);
-  background-color: transparent;
+  border-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.3);
   margin: 15px 0px 5px; }
 
 dd > pre {
@@ -189,6 +190,17 @@ dd > pre {
 .line-nums-table {
   width: 100%;
   table-layout: fixed; }
+
+/* Nim search input */
+div#searchInputDiv {
+  margin-bottom: 8px;
+}
+div#searchInputDiv input#searchInput {
+  width: 10em;
+}
+div.search-groupby {
+  margin-bottom: 8px;
+}
 
 table.line-nums-table {
   border-radius: 4px;
@@ -333,7 +345,7 @@ img {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
 
 p {
-  margin: 0 0 12px; }
+  margin: 0 0 8px; }
 
 small {
   font-size: 85%; }
@@ -353,7 +365,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-weight: 600;
   line-height: 20px;
   color: inherit;
@@ -361,6 +373,7 @@ h6 {
 
 h1 {
   font-size: 2em;
+  font-weight: 400;
   padding-bottom: .15em;
   border-bottom: 1px solid #aaaaaa;
   margin-top: 1.0em;
@@ -491,13 +504,13 @@ pre {
   box-sizing: border-box;
   min-width: calc(100% - 19.5px);
   padding: 9.5px;
-  margin: 0.25em 10px 0.25em 10px;
-  font-size: 14px;
+  margin: 0.25em 10px 10px 10px;
+  font-size: 15px;
   line-height: 20px;
   white-space: pre !important;
   overflow-y: hidden;
   overflow-x: visible;
-  background-color: whitesmoke;
+  background-color: rgba(0, 0, 0, 0.01);
   border: 1px solid #cccccc;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -776,14 +789,14 @@ div.admonition p.admonition-title, div.hint p.admonition-title,
 div.important p.admonition-title, div.note p.admonition-title,
 div.tip p.admonition-title {
   font-weight: bold;
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif; }
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; }
 
 div.attention p.admonition-title, div.caution p.admonition-title,
 div.danger p.admonition-title, div.error p.admonition-title,
 div.warning p.admonition-title, .code .error {
   color: #b30000;
   font-weight: bold;
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif; }
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; }
 
 /* Uncomment (and remove this text!) to get reduced vertical space in
    compound paragraphs.
@@ -830,7 +843,7 @@ div.sidebar {
   clear: right; }
 
 div.sidebar p.rubric {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: medium; }
 
 div.system-messages {
@@ -937,12 +950,12 @@ p.rubric {
   text-align: center; }
 
 p.sidebar-title {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: larger; }
 
 p.sidebar-subtitle {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-weight: bold; }
 
 p.topic-title {
@@ -984,15 +997,15 @@ pre.code .inserted, code .inserted {
   background-color: #A3D289; }
 
 span.classifier {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-style: oblique; }
 
 span.classifier-delimiter {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-weight: bold; }
 
 span.interpreted {
-  font-family: "Helvetica Neue", "HelveticaNeue", "Raleway", Helvetica, Arial, sans-serif; }
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif; }
 
 span.option {
   white-space: nowrap; }
@@ -1015,7 +1028,7 @@ table.docinfo {
   margin: 0em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-family: "Raleway", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif !important;
+  font-family: "Lato", "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, sans-serif !important;
   color: #444444; }
 
 table.docutils {
@@ -1130,7 +1143,7 @@ dt pre > span.Identifier ~ span.Identifier, dt pre > span.Operator ~ span.Identi
   color: inherit;
   font-weight: inherit; }
 
-dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator {
+dt pre > span.Operator ~ span.Identifier {
   color: inherit;
   font-weight: inherit; }
 
@@ -1145,15 +1158,6 @@ dt pre > span.Operator ~ span.Identifier, dt pre > span.Operator ~ span.Operator
   background-repeat: no-repeat;
   background-image: url("data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AAAAAAUAAAAF////AP///wD///8A////AP///wD///8A////AP///wD///8A////AAAAAAIAAABbAAAAlQAAAKIAAACbAAAAmwAAAKIAAACVAAAAWwAAAAL///8A////AP///wD///8A////AAAAABQAAADAAAAAYwAAAA3///8A////AP///wD///8AAAAADQAAAGMAAADAAAAAFP///wD///8A////AP///wAAAACdAAAAOv///wD///8A////AP///wD///8A////AP///wD///8AAAAAOgAAAJ3///8A////AP///wAAAAAnAAAAcP///wAAAAAoAAAASv///wD///8A////AP///wAAAABKAAAAKP///wAAAABwAAAAJ////wD///8AAAAAgQAAABwAAACIAAAAkAAAAJMAAACtAAAAFQAAABUAAACtAAAAkwAAAJAAAACIAAAAHAAAAIH///8A////AAAAAKQAAACrAAAAaP///wD///8AAAAARQAAANIAAADSAAAARf///wD///8AAAAAaAAAAKsAAACk////AAAAADMAAACcAAAAnQAAABj///8A////AP///wAAAAAYAAAAGP///wD///8A////AAAAABgAAACdAAAAnAAAADMAAAB1AAAAwwAAAP8AAADpAAAAsQAAAE4AAAAb////AP///wAAAAAbAAAATgAAALEAAADpAAAA/wAAAMMAAAB1AAAAtwAAAOkAAAD/AAAA/wAAAP8AAADvAAAA3gAAAN4AAADeAAAA3gAAAO8AAAD/AAAA/wAAAP8AAADpAAAAtwAAAGUAAAA/AAAA3wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADfAAAAPwAAAGX///8A////AAAAAEgAAADtAAAAvwAAAL0AAADGAAAA7wAAAO8AAADGAAAAvQAAAL8AAADtAAAASP///wD///8A////AP///wD///8AAAAAO////wD///8A////AAAAAIcAAACH////AP///wD///8AAAAAO////wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A//8AAP//AAD4HwAA7/cAAN/7AAD//wAAoYUAAJ55AACf+QAAh+EAAAAAAADAAwAA4AcAAP5/AAD//wAA//8AAA==");
   margin-bottom: -5px; }
-  div.pragma {
-    display: none;
-  }
-  span.pragmabegin {
-    cursor: pointer;
-  }
-  span.pragmaend {
-    cursor: pointer;
-  }
 
 div.search_results {
   background-color: antiquewhite;
@@ -1161,32 +1165,52 @@ div.search_results {
   padding: 1em;
   border: 1px solid #4d4d4d;
 }
-</style>
 
-<script type="text/javascript" src="../dochack.js"></script>
-
-<script type="text/javascript">
-function togglepragma(d) {
-  if (d.style.display != 'inline')
-    d.style.display = 'inline';
-  else
-    d.style.display = 'none';
+div#global-links ul {
+  margin-left: 0;
+  list-style-type: none;
 }
 
+span.pragmadots {
+  /* Position: relative frees us up to make the dots
+  look really nice without fucking up the layout and
+  causing bulging in the parent container */
+  position: relative;
+  /* 1px down looks slightly nicer */
+  top: 1px;
+
+  padding: 2px;
+  background-color: #D3D3D3;
+  border-radius: 4px;
+  margin: 0 2px;
+  cursor: pointer;
+
+  /* For some reason on Chrome, making the font size
+  smaller than 1em is causing the parent container to
+  bulge slightly. So, we're stuck with inheriting 1em,
+  which is sad, because 0.8em looks better... */
+}
+span.pragmadots:hover {
+  background-color: #DBDBDB;
+}
+span.pragmawrap {
+  display: none;
+}
+
+</style>
+
+<script type="text/javascript" src="dochack.js"></script>
+
+<script type="text/javascript">
 function main() {
-  var elements = document.getElementsByClassName("pragmabegin");
-  for (var i = 0; i < elements.length; ++i) {
-    var e = elements[i];
-    e.onclick = function(event) {
-      togglepragma(event.target.nextSibling);
-    };
-  }
-  var elements = document.getElementsByClassName("pragmaend");
-  for (var i = 0; i < elements.length; ++i) {
-    var e = elements[i];
-    e.onclick = function(event) {
-      togglepragma(event.target.previousSibling);
-    };
+  var pragmaDots = document.getElementsByClassName("pragmadots");
+  for (var i = 0; i < pragmaDots.length; i++) {
+    pragmaDots[i].onclick = function(event) {
+      // Hide tease
+      event.target.parentNode.style.display = "none";
+      // Show actual
+      event.target.parentNode.nextElementSibling.style.display = "inline";
+    }
   }
 }
 </script>
@@ -1198,7 +1222,11 @@ function main() {
     <h1 class="title">Module vkapi</h1>
     <div class="row">
   <div class="three columns">
-  <div>
+  <div id="global-links">
+    <ul class="simple">
+    </ul>
+  </div>
+  <div id="searchInputDiv">
     Search: <input type="text" id="searchInput"
       onkeyup="search()" />
   </div>
@@ -1210,32 +1238,26 @@ function main() {
     </select>
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="initialization_toc" href="#initialization">Initialization</a></li>
+<li><a class="reference" id="api-object-initialization_toc" href="#api-object-initialization">API object initialization</a></li>
 <li><a class="reference" id="authorization_toc" href="#authorization">Authorization</a></li>
 <li><a class="reference" id="synchronous-vk-api-usage_toc" href="#synchronous-vk-api-usage">Synchronous VK API usage</a></li>
 <li><a class="reference" id="asynchronous-vk-api-usage_toc" href="#asynchronous-vk-api-usage">Asynchronous VK API usage</a></li>
 <li>
-  <a class="reference reference-toplevel" href="#6" id="56">Imports</a>
-  <ul class="simple simple-toc-section">
-    
-  </ul>
-</li>
-<li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#VkApiBase"
-    title="VkApiBase*[HttpType] = ref object
+    title="VkApiBase[HttpType] = ref object
   token*: string               ## VK API token
   version*: string             ## VK API version
   client: HttpType"><wbr />Vk<wbr />Api<wbr />Base<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#VkApi"
-    title="VkApi* = VkApiBase[HttpClient]"><wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
+    title="VkApi = VkApiBase[HttpClient]"><wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#AsyncVkApi"
-    title="AsyncVkApi* = VkApiBase[AsyncHttpClient]"><wbr />Async<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
+    title="AsyncVkApi = VkApiBase[AsyncHttpClient]"><wbr />Async<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#VkApiError"
-    title="VkApiError* = object of Exception"><wbr />Vk<wbr />Api<wbr />Error<span class="attachedType" style="visibility:hidden"></span></a></li>
+    title="VkApiError = object of Exception"><wbr />Vk<wbr />Api<wbr />Error<span class="attachedType" style="visibility:hidden"></span></a></li>
   <li><a class="reference" href="#VkAuthError"
-    title="VkAuthError* = object of Exception"><wbr />Vk<wbr />Auth<wbr />Error<span class="attachedType" style="visibility:hidden"></span></a></li>
+    title="VkAuthError = object of Exception"><wbr />Vk<wbr />Auth<wbr />Error<span class="attachedType" style="visibility:hidden"></span></a></li>
 
   </ul>
 </li>
@@ -1243,33 +1265,36 @@ function main() {
   <a class="reference reference-toplevel" href="#10" id="60">Consts</a>
   <ul class="simple simple-toc-section">
       <li><a class="reference" href="#ApiVer"
-    title="ApiVer* = &quot;5.68&quot;"><wbr />Api<wbr />Ver<span class="attachedType" style="visibility:hidden"></span></a></li>
+    title="ApiVer = &quot;5.85&quot;"><wbr />Api<wbr />Ver<span class="attachedType" style="visibility:hidden"></span></a></li>
 
   </ul>
 </li>
 <li>
   <a class="reference reference-toplevel" href="#12" id="62">Procs</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#newVkApi,"
-    title="newVkApi*(token = &quot;&quot;; version = ApiVer): VkApi"><wbr />new<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
-  <li><a class="reference" href="#newAsyncVkApi,"
-    title="newAsyncVkApi*(token = &quot;&quot;; version = ApiVer): AsyncVkApi"><wbr />new<wbr />Async<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
-  <li><a class="reference" href="#login,,string,string"
-    title="login*(api: VkApi | AsyncVkApi; login, password: string; twoFactorCode = &quot;&quot;;
-       scope = AuthScope)"><wbr />login<span class="attachedType" style="visibility:hidden"></span></a></li>
-  <li><a class="reference" href="#toApi,openarray[tuple[string,string]]"
-    title="toApi*(data: openarray[tuple[key, val: string]]): StringTableRef"><wbr />to<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
-  <li><a class="reference" href="#request,,string"
-    title="request*(api: VkApi | AsyncVkApi; name: string; params = newStringTable()): Future[
-    JsonNode]"><wbr />request<span class="attachedType" style="visibility:hidden"></span></a></li>
+      <li><a class="reference" href="#newVkApi%2Cstring"
+    title="newVkApi(token = &quot;&quot;; version = ApiVer): VkApi"><wbr />new<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden">VkApi</span></a></li>
+  <li><a class="reference" href="#newAsyncVkApi%2Cstring"
+    title="newAsyncVkApi(token = &quot;&quot;; version = ApiVer): AsyncVkApi"><wbr />new<wbr />Async<wbr />Vk<wbr />Api<span class="attachedType" style="visibility:hidden">AsyncVkApi</span></a></li>
+  <li><a class="reference" href="#login%2CAsyncVkApi%2Cstring%2Cstring%2Cstring"
+    title="login(api: AsyncVkApi; login, password: string; twoFactorCode = &quot;&quot;; scope = AuthScope): Future[
+    void]"><wbr />login<span class="attachedType" style="visibility:hidden">AsyncVkApi</span></a></li>
+  <li><a class="reference" href="#login%2CVkApi%2Cstring%2Cstring%2Cstring"
+    title="login(api: VkApi; login, password: string; twoFactorCode = &quot;&quot;; scope = AuthScope)"><wbr />login<span class="attachedType" style="visibility:hidden">VkApi</span></a></li>
+  <li><a class="reference" href="#toApi%2CopenArray%5Btuple%5Bstring%2Cstring%5D%5D"
+    title="toApi(data: openArray[tuple[key, val: string]]): StringTableRef"><wbr />to<wbr />Api<span class="attachedType" style="visibility:hidden"></span></a></li>
+  <li><a class="reference" href="#request%2CAsyncVkApi%2Cstring"
+    title="request(api: AsyncVkApi; name: string; params = newStringTable()): Future[JsonNode]"><wbr />request<span class="attachedType" style="visibility:hidden">AsyncVkApi</span></a></li>
+  <li><a class="reference" href="#request%2CVkApi%2Cstring"
+    title="request(api: VkApi; name: string; params = newStringTable()): JsonNode"><wbr />request<span class="attachedType" style="visibility:hidden">VkApi</span></a></li>
 
   </ul>
 </li>
 <li>
-  <a class="reference reference-toplevel" href="#16" id="66">Macros</a>
+  <a class="reference reference-toplevel" href="#17" id="67">Macros</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#@.m,,untyped"
-    title="`@`*(api: VkApi | AsyncVkApi; body: untyped): untyped">`<wbr />@`<span class="attachedType" style="visibility:hidden"></span></a></li>
+      <li><a class="reference" href="#%40.m%2C%2Cuntyped"
+    title="`@`(api: VkApi | AsyncVkApi; body: untyped): untyped"><wbr />`@`<span class="attachedType" style="visibility:hidden">VkApi</span></a></li>
 
   </ul>
 </li>
@@ -1279,40 +1304,41 @@ function main() {
   </div>
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
-  <p class="module-desc"><p>This module is a wrapper for vk.com API.</p>
-<p>It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.</p>
-<p>In addition this module exposes macro <tt class="docutils literal"><span class="pre">@</span></tt> to ease calling of the API methods</p>
-
-<h1><a class="toc-backref" id="initialization" href="#initialization">Initialization</a></h1><pre class="listing"><span class="Comment"># Synchronous VK API</span>
+  <p class="module-desc">This module is a simple synchronous/asynchronous wrapper for the vk.com API.
+<h1><a class="toc-backref" id="api-object-initialization" href="#api-object-initialization">API object initialization</a></h1><pre class="listing"><span class="Comment"># Synchronous VK API</span>
 <span class="Keyword">let</span> <span class="Identifier">api</span> <span class="Operator">=</span> <span class="Identifier">newVkApi</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Comment"># Asynchronous VK API</span>
 <span class="Keyword">let</span> <span class="Identifier">asyncApi</span> <span class="Operator">=</span> <span class="Identifier">newAsyncVkApi</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
-<span class="Comment"># If you want to provide token instead of login and password, use this:</span>
+<span class="Comment"># If you want to provide a token instead of login and password,</span>
+<span class="Comment"># pass the token as an argument:</span>
 <span class="Keyword">let</span> <span class="Identifier">api</span> <span class="Operator">=</span> <span class="Identifier">newVkApi</span><span class="Punctuation">(</span><span class="Identifier">token</span><span class="Operator">=</span><span class="StringLit">&quot;your token&quot;</span><span class="Punctuation">)</span></pre>
-<h1><a class="toc-backref" id="authorization" href="#authorization">Authorization</a></h1><pre class="listing"><span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">)</span>
-<span class="Comment"># This library also supports 2-factor authentication:</span>
+<h1><a class="toc-backref" id="authorization" href="#authorization">Authorization</a></h1><p>Authorization is actually done with the vk.com OAuth API and uses secret key and client ID of VK iPhone client.</p>
+<pre class="listing"><span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">)</span>
+<span class="Comment"># You can login if you have 2-factor authentication as well</span>
 <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your 2fa code&quot;</span><span class="Punctuation">)</span>
-<span class="Comment"># Async example:</span>
+<span class="Comment"># Async authorization</span>
 <span class="Identifier">waitFor</span> <span class="Identifier">asyncApi</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;password&quot;</span><span class="Punctuation">)</span></pre>
 <h1><a class="toc-backref" id="synchronous-vk-api-usage" href="#synchronous-vk-api-usage">Synchronous VK API usage</a></h1><pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;friends.getOnline&quot;</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;fave.getPosts&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span><span class="StringLit">&quot;count&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">newTable</span><span class="Punctuation">)</span>
-<span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;wall.post&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span><span class="StringLit">&quot;friends_only&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;message&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Hello world from nim-lang&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">toApi</span><span class="Punctuation">)</span>
-
-<span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">friends</span><span class="Operator">.</span><span class="Identifier">getOnline</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span>
+  <span class="StringLit">&quot;wall.post&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span>
+    <span class="StringLit">&quot;friends_only&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">,</span>
+    <span class="StringLit">&quot;message&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;Hello world from nim-lang&quot;</span>
+  <span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">toApi</span>
+<span class="Punctuation">)</span></pre><p>This module also has a <cite>@</cite> macro, which can make API requests shorter and look more &quot;native&quot;.</p>
+<p>Don't forget that this macro <strong>DOES NOT</strong> actually check if argument types or names are correct!</p>
+<pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">friends</span><span class="Operator">.</span><span class="Identifier">getOnline</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">fave</span><span class="Operator">.</span><span class="Identifier">getPosts</span><span class="Punctuation">(</span><span class="Identifier">count</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">)</span>
 <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">wall</span><span class="Operator">.</span><span class="Identifier">post</span><span class="Punctuation">(</span><span class="Identifier">friends_only</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="Identifier">message</span><span class="Operator">=</span><span class="StringLit">&quot;Hello world from nim-lang&quot;</span><span class="Punctuation">)</span></pre>
 <h1><a class="toc-backref" id="asynchronous-vk-api-usage" href="#asynchronous-vk-api-usage">Asynchronous VK API usage</a></h1><pre class="listing"><span class="Keyword">import</span> <span class="Identifier">asyncdispatch</span>
+
 <span class="Identifier">echo</span> <span class="Identifier">waitFor</span> <span class="Identifier">asyncApi</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;wall.get&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span><span class="StringLit">&quot;count&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">toApi</span><span class="Punctuation">)</span>
 <span class="Identifier">echo</span> <span class="Identifier">waitFor</span> <span class="Identifier">asyncApi</span><span class="Operator">@</span><span class="Identifier">wall</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Identifier">count</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">)</span></pre></p>
-  <div class="section" id="6">
-<h1><a class="toc-backref" href="#6">Imports</a></h1>
-<dl class="item">
-<a class="reference external" href="httpclient.html">httpclient</a>, <a class="reference external" href="json.html">json</a>, <a class="reference external" href="strutils.html">strutils</a>, <a class="reference external" href="asyncdispatch.html">asyncdispatch</a>, <a class="reference external" href="macros.html">macros</a>, <a class="reference external" href="cgi.html">cgi</a>, <a class="reference external" href="strtabs.html">strtabs</a>
-</dl></div>
-<div class="section" id="7">
+  <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
-<dt id="VkApiBase"><a name="VkApiBase"></a><pre><span class="Identifier">VkApiBase</span><span class="Operator">*</span><span class="Other">[</span><span class="Identifier">HttpType</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+<a id="VkApiBase"></a>
+<dt><pre><a href="vkapi.html#VkApiBase"><span class="Identifier">VkApiBase</span></a><span class="Other">[</span><span class="Identifier">HttpType</span><span class="Other">]</span> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">token</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>               <span class="Comment">## VK API token</span>
   <span class="Identifier">version</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>             <span class="Comment">## VK API version</span>
   <span class="Identifier">client</span><span class="Other">:</span> <span class="Identifier">HttpType</span>
@@ -1321,22 +1347,26 @@ function main() {
 VK API object base
 
 </dd>
-<dt id="VkApi"><a name="VkApi"></a><pre><span class="Identifier">VkApi</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">VkApiBase</span><span class="Other">[</span><span class="Identifier">HttpClient</span><span class="Other">]</span></pre></dt>
+<a id="VkApi"></a>
+<dt><pre><a href="vkapi.html#VkApi"><span class="Identifier">VkApi</span></a> <span class="Other">=</span> <a href="vkapi.html#VkApiBase"><span class="Identifier">VkApiBase</span></a><span class="Other">[</span><span class="Identifier">HttpClient</span><span class="Other">]</span></pre></dt>
 <dd>
 VK API object for doing synchronous requests
 
 </dd>
-<dt id="AsyncVkApi"><a name="AsyncVkApi"></a><pre><span class="Identifier">AsyncVkApi</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Identifier">VkApiBase</span><span class="Other">[</span><span class="Identifier">AsyncHttpClient</span><span class="Other">]</span></pre></dt>
+<a id="AsyncVkApi"></a>
+<dt><pre><a href="vkapi.html#AsyncVkApi"><span class="Identifier">AsyncVkApi</span></a> <span class="Other">=</span> <a href="vkapi.html#VkApiBase"><span class="Identifier">VkApiBase</span></a><span class="Other">[</span><span class="Identifier">AsyncHttpClient</span><span class="Other">]</span></pre></dt>
 <dd>
 VK API object for doing asynchronous requests
 
 </dd>
-<dt id="VkApiError"><a name="VkApiError"></a><pre><span class="Identifier">VkApiError</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">Exception</span></pre></dt>
+<a id="VkApiError"></a>
+<dt><pre><a href="vkapi.html#VkApiError"><span class="Identifier">VkApiError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">Exception</span></pre></dt>
 <dd>
 VK API Error
 
 </dd>
-<dt id="VkAuthError"><a name="VkAuthError"></a><pre><span class="Identifier">VkAuthError</span><span class="Operator">*</span> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">Exception</span></pre></dt>
+<a id="VkAuthError"></a>
+<dt><pre><a href="vkapi.html#VkAuthError"><span class="Identifier">VkAuthError</span></a> <span class="Other">=</span> <span class="Keyword">object</span> <span class="Keyword">of</span> <span class="Identifier">Exception</span></pre></dt>
 <dd>
 
 
@@ -1346,7 +1376,8 @@ VK API Error
 <div class="section" id="10">
 <h1><a class="toc-backref" href="#10">Consts</a></h1>
 <dl class="item">
-<dt id="ApiVer"><a name="ApiVer"></a><pre><span class="Identifier">ApiVer</span><span class="Operator">*</span> <span class="Other">=</span> <span class="StringLit">&quot;5.68&quot;</span></pre></dt>
+<a id="ApiVer"></a>
+<dt><pre><span class="Identifier">ApiVer</span> <span class="Other">=</span> <span class="StringLit">&quot;5.85&quot;</span></pre></dt>
 <dd>
 Default API version
 
@@ -1356,7 +1387,10 @@ Default API version
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#12">Procs</a></h1>
 <dl class="item">
-<dt id="newVkApi"><a name="newVkApi,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newVkApi</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">token</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">version</span> <span class="Other">=</span> <span class="Identifier">ApiVer</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">VkApi</span></pre></dt>
+<a id="newVkApi,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">newVkApi</span><span class="Other">(</span><span class="Identifier">token</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">version</span> <span class="Other">=</span> <span class="Identifier">ApiVer</span><span class="Other">)</span><span class="Other">:</span> <a href="vkapi.html#VkApi"><span class="Identifier">VkApi</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Initialize <tt class="docutils literal"><span class="pre">VkApi</span></tt> object.<ul class="simple"><li><tt class="docutils literal"><span class="pre">token</span></tt> - your VK API access token</li>
 <li><tt class="docutils literal"><span class="pre">version</span></tt> - VK API version</li>
@@ -1365,7 +1399,10 @@ Initialize <tt class="docutils literal"><span class="pre">VkApi</span></tt> obje
 
 
 </dd>
-<dt id="newAsyncVkApi"><a name="newAsyncVkApi,"></a><pre><span class="Keyword">proc</span> <span class="Identifier">newAsyncVkApi</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">token</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">version</span> <span class="Other">=</span> <span class="Identifier">ApiVer</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">AsyncVkApi</span></pre></dt>
+<a id="newAsyncVkApi,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">newAsyncVkApi</span><span class="Other">(</span><span class="Identifier">token</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">version</span> <span class="Other">=</span> <span class="Identifier">ApiVer</span><span class="Other">)</span><span class="Other">:</span> <a href="vkapi.html#AsyncVkApi"><span class="Identifier">AsyncVkApi</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">ReadDirEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Initialize <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt> object.<ul class="simple"><li><tt class="docutils literal"><span class="pre">token</span></tt> - your VK API access token</li>
 <li><tt class="docutils literal"><span class="pre">version</span></tt> - VK API version</li>
@@ -1374,8 +1411,10 @@ Initialize <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt>
 
 
 </dd>
-<dt id="login"><a name="login,,string,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">login</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <span class="Identifier">VkApi</span> <span class="Operator">|</span> <span class="Identifier">AsyncVkApi</span><span class="Other">;</span> <span class="Identifier">login</span><span class="Other">,</span> <span class="Identifier">password</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">twoFactorCode</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span>
-           <span class="Identifier">scope</span> <span class="Other">=</span> <span class="Identifier">AuthScope</span><span class="Other">)</span> <span class="Other pragmabegin">{.</span><div class="pragma"><span class="Identifier">multisync</span></div><span class="Other pragmaend">.}</span></pre></dt>
+<a id="login,AsyncVkApi,string,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">login</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <a href="vkapi.html#AsyncVkApi"><span class="Identifier">AsyncVkApi</span></a><span class="Other">;</span> <span class="Identifier">login</span><span class="Other">,</span> <span class="Identifier">password</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">twoFactorCode</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span>
+          <span class="Identifier">scope</span> <span class="Other">=</span> <span class="Identifier">AuthScope</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span><span class="Identifier">void</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">FutureError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Login in VK using login and password (optionally 2-factor code)<ul class="simple"><li><tt class="docutils literal"><span class="pre">api</span></tt> - VK API object</li>
 <li><tt class="docutils literal"><span class="pre">login</span></tt> - VK login</li>
@@ -1389,13 +1428,54 @@ Login in VK using login and password (optionally 2-factor code)<ul class="simple
 <span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">users</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
 
 </dd>
-<dt id="toApi"><a name="toApi,openarray[tuple[string,string]]"></a><pre><span class="Keyword">proc</span> <span class="Identifier">toApi</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">openarray</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">key</span><span class="Other">,</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span></pre></dt>
+<a id="login,VkApi,string,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">login</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <a href="vkapi.html#VkApi"><span class="Identifier">VkApi</span></a><span class="Other">;</span> <span class="Identifier">login</span><span class="Other">,</span> <span class="Identifier">password</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">twoFactorCode</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">;</span> <span class="Identifier">scope</span> <span class="Other">=</span> <span class="Identifier">AuthScope</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span>
+    <span class="Identifier">HttpRequestError</span><span class="Other">,</span> <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span>
+    <span class="Identifier">ProtocolError</span><span class="Other">,</span> <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">OverflowError</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">JsonParsingError</span><span class="Other">,</span> <span class="Identifier">VkAuthError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+Login in VK using login and password (optionally 2-factor code)<ul class="simple"><li><tt class="docutils literal"><span class="pre">api</span></tt> - VK API object</li>
+<li><tt class="docutils literal"><span class="pre">login</span></tt> - VK login</li>
+<li><tt class="docutils literal"><span class="pre">password</span></tt> - VK password</li>
+<li><tt class="docutils literal"><span class="pre">code</span></tt> - if you have 2-factor auth, you need to provide your 2-factor code</li>
+<li><tt class="docutils literal"><span class="pre">scope</span></tt> - authentication scope, default is &quot;all&quot;</li>
+</ul>
+<p>Example of usage:</p>
+<pre class="listing"><span class="Keyword">let</span> <span class="Identifier">api</span> <span class="Operator">=</span> <span class="Identifier">newVkApi</span><span class="Punctuation">(</span><span class="Punctuation">)</span>
+<span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">login</span><span class="Punctuation">(</span><span class="StringLit">&quot;your login&quot;</span><span class="Punctuation">,</span> <span class="StringLit">&quot;your password&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">users</span><span class="Operator">.</span><span class="Identifier">get</span><span class="Punctuation">(</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<a id="toApi,openArray[tuple[string,string]]"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">toApi</span><span class="Other">(</span><span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">openArray</span><span class="Other">[</span><span class="Keyword">tuple</span><span class="Other">[</span><span class="Identifier">key</span><span class="Other">,</span> <span class="Identifier">val</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">]</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">StringTableRef</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Shortcut for newStringTable to create arguments for request call
 
 </dd>
-<dt id="request"><a name="request,,string"></a><pre><span class="Keyword">proc</span> <span class="Identifier">request</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <span class="Identifier">VkApi</span> <span class="Operator">|</span> <span class="Identifier">AsyncVkApi</span><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">params</span> <span class="Other">=</span> <span class="Identifier">newStringTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span>
-    <span class="Identifier">JsonNode</span><span class="Other">]</span> <span class="Other pragmabegin">{.</span><div class="pragma"><span class="Identifier">multisync</span><span class="Other">,</span> <span class="Identifier">discardable</span></div><span class="Other pragmaend">.}</span></pre></dt>
+<a id="request,AsyncVkApi,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">request</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <a href="vkapi.html#AsyncVkApi"><span class="Identifier">AsyncVkApi</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">params</span> <span class="Other">=</span> <span class="Identifier">newStringTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Future</span><span class="Other">[</span><span class="Identifier">JsonNode</span><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">discardable</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">FutureError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">,</span> <span class="Identifier">ReadIOEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+Main method for  VK API requests.<ul class="simple"><li><tt class="docutils literal"><span class="pre">api</span></tt> - API object (<tt class="docutils literal"><span class="pre">VkApi</span></tt> or <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt> - namespace and method separated with dot (<a class="reference external" href="https://vk.com/dev/methods">https://vk.com/dev/methods</a>)</li>
+</ul>
+<p>Examples:</p>
+<ul class="simple"><li><tt class="docutils literal"><span class="pre">params</span></tt> - StringTable with parameters</li>
+<li><tt class="docutils literal"><span class="pre">return</span></tt> - returns response as JsonNode object</li>
+</ul>
+<pre class="listing"><span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;friends.getOnline&quot;</span><span class="Punctuation">)</span>
+<span class="Identifier">echo</span> <span class="Identifier">api</span><span class="Operator">.</span><span class="Identifier">request</span><span class="Punctuation">(</span><span class="StringLit">&quot;fave.getPosts&quot;</span><span class="Punctuation">,</span> <span class="Punctuation">{</span><span class="StringLit">&quot;count&quot;</span><span class="Punctuation">:</span> <span class="StringLit">&quot;1&quot;</span><span class="Punctuation">}</span><span class="Operator">.</span><span class="Identifier">toApi</span><span class="Punctuation">)</span>
+<span class="Identifier">api</span><span class="Operator">@</span><span class="Identifier">wall</span><span class="Operator">.</span><span class="Identifier">post</span><span class="Punctuation">(</span><span class="Identifier">friends_only</span><span class="Operator">=</span><span class="DecNumber">1</span><span class="Punctuation">,</span> <span class="Identifier">message</span><span class="Operator">=</span><span class="StringLit">&quot;Hello world from nim-lang!&quot;</span><span class="Punctuation">)</span></pre>
+
+</dd>
+<a id="request,VkApi,string"></a>
+<dt><pre><span class="Keyword">proc</span> <span class="Identifier">request</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <a href="vkapi.html#VkApi"><span class="Identifier">VkApi</span></a><span class="Other">;</span> <span class="Identifier">name</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">params</span> <span class="Other">=</span> <span class="Identifier">newStringTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">JsonNode</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">discardable</span><span class="Other">,</span> <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">,</span> <span class="Identifier">ValueError</span><span class="Other">,</span> <span class="Identifier">JsonParsingError</span><span class="Other">,</span> <span class="Identifier">HttpRequestError</span><span class="Other">,</span>
+                        <span class="Identifier">SslError</span><span class="Other">,</span> <span class="Identifier">OSError</span><span class="Other">,</span> <span class="Identifier">IOError</span><span class="Other">,</span> <span class="Identifier">TimeoutError</span><span class="Other">,</span> <span class="Identifier">ProtocolError</span><span class="Other">,</span>
+                        <span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">OverflowError</span><span class="Other">,</span> <span class="Identifier">VkApiError</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ReadIOEffect</span><span class="Other">,</span> <span class="Identifier">WriteIOEffect</span><span class="Other">,</span> <span class="Identifier">RootEffect</span><span class="Other">,</span> <span class="Identifier">TimeEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 Main method for  VK API requests.<ul class="simple"><li><tt class="docutils literal"><span class="pre">api</span></tt> - API object (<tt class="docutils literal"><span class="pre">VkApi</span></tt> or <tt class="docutils literal"><span class="pre">AsyncVkApi</span></tt>)</li>
 <li><tt class="docutils literal"><span class="pre">name</span></tt> - namespace and method separated with dot (<a class="reference external" href="https://vk.com/dev/methods">https://vk.com/dev/methods</a>)</li>
@@ -1411,10 +1491,11 @@ Main method for  VK API requests.<ul class="simple"><li><tt class="docutils lite
 </dd>
 
 </dl></div>
-<div class="section" id="16">
-<h1><a class="toc-backref" href="#16">Macros</a></h1>
+<div class="section" id="17">
+<h1><a class="toc-backref" href="#17">Macros</a></h1>
 <dl class="item">
-<dt id="@"><a name="@.m,,untyped"></a><pre><span class="Keyword">macro</span> <span class="Other">`</span><span class="Operator">@</span><span class="Other">`</span><span class="Operator">*</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <span class="Identifier">VkApi</span> <span class="Operator">|</span> <span class="Identifier">AsyncVkApi</span><span class="Other">;</span> <span class="Identifier">body</span><span class="Other">:</span> <span class="Identifier">untyped</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">untyped</span></pre></dt>
+<a id="@.m,,untyped"></a>
+<dt><pre><span class="Keyword">macro</span> <span class="Identifier">`@`</span><span class="Other">(</span><span class="Identifier">api</span><span class="Other">:</span> <a href="vkapi.html#VkApi"><span class="Identifier">VkApi</span></a> <span class="Operator">|</span> <a href="vkapi.html#AsyncVkApi"><span class="Identifier">AsyncVkApi</span></a><span class="Other">;</span> <span class="Identifier">body</span><span class="Other">:</span> <span class="Identifier">untyped</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">untyped</span></pre></dt>
 <dd>
 <p><cite>@</cite> macro gives you the ability to make API calls using much more easier syntax</p>
 <p>This macro is transformed into <tt class="docutils literal"><span class="pre">request</span></tt> call with parameters</p>
@@ -1434,7 +1515,7 @@ Main method for  VK API requests.<ul class="simple"><li><tt class="docutils lite
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2017-09-01 12:57:05 UTC</small>
+        <small>Made with Nim. Generated: 2018-10-16 20:52:00 UTC</small>
       </div>
     </div>
   </div>

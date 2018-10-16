@@ -1,10 +1,6 @@
-## This module is a wrapper for vk.com API.
+## This module is a simple synchronous/asynchronous wrapper for the vk.com API.
 ##
-## It gives you the ability to call vk.com API methods using synchronous and asynchronous approach.
-##
-## In addition this module exposes macro ``@`` to ease calling of the API methods
-##
-## Initialization
+## API object initialization
 ## ====================
 ##
 ## .. code-block:: Nim
@@ -12,17 +8,20 @@
 ##    let api = newVkApi()
 ##    # Asynchronous VK API
 ##    let asyncApi = newAsyncVkApi()
-##    # If you want to provide token instead of login and password, use this:
+##    # If you want to provide a token instead of login and password,
+##    # pass the token as an argument:
 ##    let api = newVkApi(token="your token")
 ##
 ## Authorization
 ## ====================
 ##
+## Authorization is actually done with the vk.com OAuth API and uses secret key and client ID of VK iPhone client.
+##
 ## .. code-block:: Nim
 ##    api.login("your login", "your password")
-##    # This library also supports 2-factor authentication:
+##    # You can login if you have 2-factor authentication as well
 ##    api.login("your login", "your password", "your 2fa code")
-##    # Async example:
+##    # Async authorization
 ##    waitFor asyncApi.login("login", "password")
 ##
 ## Synchronous VK API usage
@@ -31,8 +30,18 @@
 ## .. code-block:: Nim
 ##    echo api.request("friends.getOnline")
 ##    echo api.request("fave.getPosts", {"count": "1"}.newTable)
-##    echo api.request("wall.post", {"friends_only": "1", "message": "Hello world from nim-lang"}.toApi)
+##    echo api.request(
+##      "wall.post", {
+##        "friends_only": "1", 
+##        "message": "Hello world from nim-lang"
+##      }.toApi
+##    )
+##    
+## This module also has a `@` macro, which can make API requests shorter and look more "native".
 ##
+## Don't forget that this macro **DOES NOT** actually check if argument types or names are correct!
+##
+## .. code-block:: Nim
 ##    echo api@friends.getOnline()
 ##    echo api@fave.getPosts(count=1)
 ##    api@wall.post(friends_only=1, message="Hello world from nim-lang")
@@ -42,6 +51,7 @@
 ##
 ## .. code-block:: Nim
 ##    import asyncdispatch
+##
 ##    echo waitFor asyncApi.request("wall.get", {"count": "1"}.toApi)
 ##    echo waitFor asyncApi@wall.get(count=1)
 
@@ -52,6 +62,7 @@ import json
 export json
 # `join` and `editDistance` procedures
 import strutils
+import editdistance
 # Async and multisync features
 import asyncdispatch
 # AST operations
@@ -77,7 +88,7 @@ type
 
 const
   ApiUrl = "https://api.vk.com/method/"
-  ApiVer* = "5.68" ## Default API version
+  ApiVer* = "5.85" ## Default API version
   AuthScope = "all" ## Default authorization scope
   ClientId = "3140623"  ## Client ID (VK iPhone app)
   ClientSecret = "VeWdmVclDCtn6ihuP1nt"  ## Client secret
@@ -173,6 +184,8 @@ proc getErrorMsg(err: JsonNode): string =
     "Captcha is required"
   of 17:
     "Need validation code"
+  of 29:
+    "Rate limit reached"
   else:
     "Error code $1: $2 " % [$err["error_code"].num, err["error_msg"].str]
   
@@ -204,13 +217,13 @@ proc request*(api: VkApi | AsyncVkApi, name: string,
   result = data.getOrDefault("response")
   if result.isNil(): result = data
 
-let methods {.compiletime.} = staticRead("methods.txt").split(",")
+const methods = staticRead("methods.txt").split(",")
 
 proc suggestedMethod(name: string): string {.compiletime.} = 
   ## Find suggested method name (with Levenshtein distance)
-  var lastDist = 100500
+  var lastDist = len(name)
   for entry in methods:
-    let dist = editDistance(name, entry)
+    let dist = editdistance.editDistanceAscii(name, entry)
     if dist < lastDist:
       result = entry
       lastDist = dist
