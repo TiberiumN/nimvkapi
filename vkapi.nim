@@ -62,7 +62,7 @@ import json
 export json
 # `join` and `editDistance` procedures
 import strutils
-import editdistance
+import std/editdistance
 # Async and multisync features
 import asyncdispatch
 # AST operations
@@ -223,7 +223,7 @@ proc suggestedMethod(name: string): string {.compiletime.} =
   ## Find suggested method name (with Levenshtein distance)
   var lastDist = len(name)
   for entry in methods:
-    let dist = editdistance.editDistanceAscii(name, entry)
+    let dist = editDistanceAscii(name, entry)
     if dist < lastDist:
       result = entry
       lastDist = dist
