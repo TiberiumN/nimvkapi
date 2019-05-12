@@ -5,6 +5,7 @@ author        = "TiberiumN (Daniil Yarancev)"
 description   = "Wrapper for vk.com API"
 license       = "MIT"
 
+installFiles  = @["methods.txt"]
 skipDirs      = @["docs"]
 # Dependencies
 
